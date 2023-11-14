@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8332B035A3F00059D90 /* OnboardingTabView.swift */; };
+		662CC8362B035B5B00059D90 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8352B035B5B00059D90 /* MainView.swift */; };
+		662CC8392B03632B00059D90 /* OnboardingFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8382B03632B00059D90 /* OnboardingFirstView.swift */; };
+		662CC83B2B03634200059D90 /* OnboardingSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83A2B03634200059D90 /* OnboardingSecondView.swift */; };
+		662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83C2B03635200059D90 /* OnboardingThirdView.swift */; };
+		662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83E2B03BE5100059D90 /* PetInfoView.swift */; };
 		66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F42B03518A00E2A6AF /* NotiPetApp.swift */; };
 		66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F62B03518A00E2A6AF /* ContentView.swift */; };
 		66D041F92B03518D00E2A6AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66D041F82B03518D00E2A6AF /* Assets.xcassets */; };
@@ -16,6 +22,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		662CC8332B035A3F00059D90 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
+		662CC8352B035B5B00059D90 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		662CC8382B03632B00059D90 /* OnboardingFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFirstView.swift; sourceTree = "<group>"; };
+		662CC83A2B03634200059D90 /* OnboardingSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSecondView.swift; sourceTree = "<group>"; };
+		662CC83C2B03635200059D90 /* OnboardingThirdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingThirdView.swift; sourceTree = "<group>"; };
+		662CC83E2B03BE5100059D90 /* PetInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoView.swift; sourceTree = "<group>"; };
 		66D041F12B03518A00E2A6AF /* NotiPet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotiPet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D041F42B03518A00E2A6AF /* NotiPetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiPetApp.swift; sourceTree = "<group>"; };
 		66D041F62B03518A00E2A6AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -36,6 +48,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		662CC8372B0362FF00059D90 /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				662CC8332B035A3F00059D90 /* OnboardingTabView.swift */,
+				662CC8382B03632B00059D90 /* OnboardingFirstView.swift */,
+				662CC83A2B03634200059D90 /* OnboardingSecondView.swift */,
+				662CC83C2B03635200059D90 /* OnboardingThirdView.swift */,
+			);
+			path = OnboardingViews;
+			sourceTree = "<group>";
+		};
 		66D041E82B03518A00E2A6AF = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +79,9 @@
 			isa = PBXGroup;
 			children = (
 				66D041F42B03518A00E2A6AF /* NotiPetApp.swift */,
+				662CC8352B035B5B00059D90 /* MainView.swift */,
+				662CC83E2B03BE5100059D90 /* PetInfoView.swift */,
+				662CC8372B0362FF00059D90 /* OnboardingViews */,
 				66D041F62B03518A00E2A6AF /* ContentView.swift */,
 				66D041F82B03518D00E2A6AF /* Assets.xcassets */,
 				66D041FD2B03518D00E2A6AF /* Persistence.swift */,
@@ -143,10 +169,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */,
 				66D041FE2B03518D00E2A6AF /* Persistence.swift in Sources */,
+				662CC8362B035B5B00059D90 /* MainView.swift in Sources */,
+				662CC8392B03632B00059D90 /* OnboardingFirstView.swift in Sources */,
 				66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */,
 				66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */,
+				662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */,
+				662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */,
 				66D042012B03518D00E2A6AF /* NotiPet.xcdatamodeld in Sources */,
+				662CC83B2B03634200059D90 /* OnboardingSecondView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +237,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -262,7 +294,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
