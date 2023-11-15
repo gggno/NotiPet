@@ -1,11 +1,18 @@
 import SwiftUI
 
 struct PetInfoView: View {
+    @Binding var isPresented: Bool
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("우리 아이 정보")
+            Spacer()
+            Button(action: {
+                isPresented.toggle()
+            }, label: {
+                Text("확인")
+            })
+            .padding(.bottom, 70)
+        }
     }
-}
-
-#Preview {
-    PetInfoView()
 }

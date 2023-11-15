@@ -13,6 +13,9 @@
 		662CC83B2B03634200059D90 /* OnboardingSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83A2B03634200059D90 /* OnboardingSecondView.swift */; };
 		662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83C2B03635200059D90 /* OnboardingThirdView.swift */; };
 		662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC83E2B03BE5100059D90 /* PetInfoView.swift */; };
+		662CC8412B049F0C00059D90 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8402B049F0C00059D90 /* HomeView.swift */; };
+		662CC8432B049F2900059D90 /* NotiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8422B049F2900059D90 /* NotiView.swift */; };
+		662CC8452B049F3A00059D90 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8442B049F3A00059D90 /* MyPageView.swift */; };
 		66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F42B03518A00E2A6AF /* NotiPetApp.swift */; };
 		66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F62B03518A00E2A6AF /* ContentView.swift */; };
 		66D041F92B03518D00E2A6AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66D041F82B03518D00E2A6AF /* Assets.xcassets */; };
@@ -28,6 +31,9 @@
 		662CC83A2B03634200059D90 /* OnboardingSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSecondView.swift; sourceTree = "<group>"; };
 		662CC83C2B03635200059D90 /* OnboardingThirdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingThirdView.swift; sourceTree = "<group>"; };
 		662CC83E2B03BE5100059D90 /* PetInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoView.swift; sourceTree = "<group>"; };
+		662CC8402B049F0C00059D90 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		662CC8422B049F2900059D90 /* NotiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiView.swift; sourceTree = "<group>"; };
+		662CC8442B049F3A00059D90 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		66D041F12B03518A00E2A6AF /* NotiPet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotiPet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D041F42B03518A00E2A6AF /* NotiPetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiPetApp.swift; sourceTree = "<group>"; };
 		66D041F62B03518A00E2A6AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +86,9 @@
 			children = (
 				66D041F42B03518A00E2A6AF /* NotiPetApp.swift */,
 				662CC8352B035B5B00059D90 /* MainView.swift */,
+				662CC8402B049F0C00059D90 /* HomeView.swift */,
+				662CC8422B049F2900059D90 /* NotiView.swift */,
+				662CC8442B049F3A00059D90 /* MyPageView.swift */,
 				662CC83E2B03BE5100059D90 /* PetInfoView.swift */,
 				662CC8372B0362FF00059D90 /* OnboardingViews */,
 				66D041F62B03518A00E2A6AF /* ContentView.swift */,
@@ -171,9 +180,12 @@
 			files = (
 				662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */,
 				66D041FE2B03518D00E2A6AF /* Persistence.swift in Sources */,
+				662CC8452B049F3A00059D90 /* MyPageView.swift in Sources */,
+				662CC8432B049F2900059D90 /* NotiView.swift in Sources */,
 				662CC8362B035B5B00059D90 /* MainView.swift in Sources */,
 				662CC8392B03632B00059D90 /* OnboardingFirstView.swift in Sources */,
 				66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */,
+				662CC8412B049F0C00059D90 /* HomeView.swift in Sources */,
 				66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */,
 				662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */,
 				662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */,

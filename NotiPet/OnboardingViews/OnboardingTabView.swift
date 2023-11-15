@@ -7,7 +7,8 @@ struct OnboardingTabView: View {
         TabView {
             OnboardingFirstView()
             OnboardingSecondView()
-            OnboardingThirdView(onboarding: $onboarding)
+            OnboardingThirdView()
+            PetInfoView(isPresented: $onboarding)
         }
         .tabViewStyle(.page)
         .indexViewStyle(.page(backgroundDisplayMode: .never))   // 인디게이터 배경 색상 해제
