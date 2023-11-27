@@ -2,8 +2,8 @@ import SwiftUI
 
 struct MainView: View {
     @AppStorage("onboarding") var onboarding: Bool = true
-    
-    var body: some View {
+        
+        var body: some View {
         TabView {
             HomeView()
                 .tabItem {
@@ -24,6 +24,6 @@ struct MainView: View {
     }
 }
 
-#Preview {
-    MainView()
-}
+//#Preview {
+//    MainView()
+//}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660B75832B14797E00161AF0 /* Date + convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660B75822B14797E00161AF0 /* Date + convert.swift */; };
 		662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8332B035A3F00059D90 /* OnboardingTabView.swift */; };
 		662CC8362B035B5B00059D90 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8352B035B5B00059D90 /* MainView.swift */; };
 		662CC8392B03632B00059D90 /* OnboardingFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8382B03632B00059D90 /* OnboardingFirstView.swift */; };
@@ -16,15 +17,21 @@
 		662CC8412B049F0C00059D90 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8402B049F0C00059D90 /* HomeView.swift */; };
 		662CC8432B049F2900059D90 /* NotiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8422B049F2900059D90 /* NotiView.swift */; };
 		662CC8452B049F3A00059D90 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8442B049F3A00059D90 /* MyPageView.swift */; };
+		6633C5A62B05FDDB0018DEB0 /* PetInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6633C5A52B05FDDB0018DEB0 /* PetInfoViewModel.swift */; };
+		6633C5AD2B0640790018DEB0 /* PetInfoTxfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6633C5AC2B0640790018DEB0 /* PetInfoTxfView.swift */; };
+		6655F2DD2B0B3C1800C09D9E /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6655F2DC2B0B3C1800C09D9E /* PetInfo.swift */; };
+		6655F2E12B0B4A6600C09D9E /* DatePicker_WheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */; };
+		66AB166E2B07580B00578A9E /* UIApp + keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */; };
 		66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F42B03518A00E2A6AF /* NotiPetApp.swift */; };
 		66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041F62B03518A00E2A6AF /* ContentView.swift */; };
 		66D041F92B03518D00E2A6AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66D041F82B03518D00E2A6AF /* Assets.xcassets */; };
 		66D041FC2B03518D00E2A6AF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66D041FB2B03518D00E2A6AF /* Preview Assets.xcassets */; };
-		66D041FE2B03518D00E2A6AF /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D041FD2B03518D00E2A6AF /* Persistence.swift */; };
-		66D042012B03518D00E2A6AF /* NotiPet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 66D041FF2B03518D00E2A6AF /* NotiPet.xcdatamodeld */; };
+		66E482362B0A3B22007065B2 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 66E482352B0A3B22007065B2 /* Realm */; };
+		66E482382B0A3B22007065B2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 66E482372B0A3B22007065B2 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		660B75822B14797E00161AF0 /* Date + convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + convert.swift"; sourceTree = "<group>"; };
 		662CC8332B035A3F00059D90 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
 		662CC8352B035B5B00059D90 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		662CC8382B03632B00059D90 /* OnboardingFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFirstView.swift; sourceTree = "<group>"; };
@@ -34,13 +41,16 @@
 		662CC8402B049F0C00059D90 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		662CC8422B049F2900059D90 /* NotiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiView.swift; sourceTree = "<group>"; };
 		662CC8442B049F3A00059D90 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		6633C5A52B05FDDB0018DEB0 /* PetInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoViewModel.swift; sourceTree = "<group>"; };
+		6633C5AC2B0640790018DEB0 /* PetInfoTxfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoTxfView.swift; sourceTree = "<group>"; };
+		6655F2DC2B0B3C1800C09D9E /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
+		6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_WheelView.swift; sourceTree = "<group>"; };
+		66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApp + keyboard.swift"; sourceTree = "<group>"; };
 		66D041F12B03518A00E2A6AF /* NotiPet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotiPet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D041F42B03518A00E2A6AF /* NotiPetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiPetApp.swift; sourceTree = "<group>"; };
 		66D041F62B03518A00E2A6AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		66D041F82B03518D00E2A6AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66D041FB2B03518D00E2A6AF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		66D041FD2B03518D00E2A6AF /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		66D042002B03518D00E2A6AF /* NotiPet.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NotiPet.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66E482382B0A3B22007065B2 /* RealmSwift in Frameworks */,
+				66E482362B0A3B22007065B2 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +75,53 @@
 				662CC83C2B03635200059D90 /* OnboardingThirdView.swift */,
 			);
 			path = OnboardingViews;
+			sourceTree = "<group>";
+		};
+		6633C5A22B05FD730018DEB0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				662CC8372B0362FF00059D90 /* OnboardingViews */,
+				662CC8402B049F0C00059D90 /* HomeView.swift */,
+				662CC8422B049F2900059D90 /* NotiView.swift */,
+				662CC8442B049F3A00059D90 /* MyPageView.swift */,
+				662CC83E2B03BE5100059D90 /* PetInfoView.swift */,
+				6633C5AB2B06401A0018DEB0 /* CustomView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6633C5A32B05FDA40018DEB0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6655F2DC2B0B3C1800C09D9E /* PetInfo.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6633C5A42B05FDB10018DEB0 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6633C5A52B05FDDB0018DEB0 /* PetInfoViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6633C5AB2B06401A0018DEB0 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				6633C5AC2B0640790018DEB0 /* PetInfoTxfView.swift */,
+				6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
+		66AB166C2B0757F300578A9E /* Extention */ = {
+			isa = PBXGroup;
+			children = (
+				66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */,
+				660B75822B14797E00161AF0 /* Date + convert.swift */,
+			);
+			path = Extention;
 			sourceTree = "<group>";
 		};
 		66D041E82B03518A00E2A6AF = {
@@ -84,17 +143,14 @@
 		66D041F32B03518A00E2A6AF /* NotiPet */ = {
 			isa = PBXGroup;
 			children = (
+				66AB166C2B0757F300578A9E /* Extention */,
 				66D041F42B03518A00E2A6AF /* NotiPetApp.swift */,
 				662CC8352B035B5B00059D90 /* MainView.swift */,
-				662CC8402B049F0C00059D90 /* HomeView.swift */,
-				662CC8422B049F2900059D90 /* NotiView.swift */,
-				662CC8442B049F3A00059D90 /* MyPageView.swift */,
-				662CC83E2B03BE5100059D90 /* PetInfoView.swift */,
-				662CC8372B0362FF00059D90 /* OnboardingViews */,
+				6633C5A32B05FDA40018DEB0 /* Model */,
+				6633C5A42B05FDB10018DEB0 /* ViewModel */,
+				6633C5A22B05FD730018DEB0 /* View */,
 				66D041F62B03518A00E2A6AF /* ContentView.swift */,
 				66D041F82B03518D00E2A6AF /* Assets.xcassets */,
-				66D041FD2B03518D00E2A6AF /* Persistence.swift */,
-				66D041FF2B03518D00E2A6AF /* NotiPet.xcdatamodeld */,
 				66D041FA2B03518D00E2A6AF /* Preview Content */,
 			);
 			path = NotiPet;
@@ -124,6 +180,10 @@
 			dependencies = (
 			);
 			name = NotiPet;
+			packageProductDependencies = (
+				66E482352B0A3B22007065B2 /* Realm */,
+				66E482372B0A3B22007065B2 /* RealmSwift */,
+			);
 			productName = NotiPet;
 			productReference = 66D041F12B03518A00E2A6AF /* NotiPet.app */;
 			productType = "com.apple.product-type.application";
@@ -152,6 +212,9 @@
 				Base,
 			);
 			mainGroup = 66D041E82B03518A00E2A6AF;
+			packageReferences = (
+				66E482342B0A3B22007065B2 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+			);
 			productRefGroup = 66D041F22B03518A00E2A6AF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -178,8 +241,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				660B75832B14797E00161AF0 /* Date + convert.swift in Sources */,
 				662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */,
-				66D041FE2B03518D00E2A6AF /* Persistence.swift in Sources */,
+				6655F2E12B0B4A6600C09D9E /* DatePicker_WheelView.swift in Sources */,
 				662CC8452B049F3A00059D90 /* MyPageView.swift in Sources */,
 				662CC8432B049F2900059D90 /* NotiView.swift in Sources */,
 				662CC8362B035B5B00059D90 /* MainView.swift in Sources */,
@@ -188,8 +252,11 @@
 				662CC8412B049F0C00059D90 /* HomeView.swift in Sources */,
 				66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */,
 				662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */,
+				6633C5AD2B0640790018DEB0 /* PetInfoTxfView.swift in Sources */,
 				662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */,
-				66D042012B03518D00E2A6AF /* NotiPet.xcdatamodeld in Sources */,
+				6655F2DD2B0B3C1800C09D9E /* PetInfo.swift in Sources */,
+				66AB166E2B07580B00578A9E /* UIApp + keyboard.swift in Sources */,
+				6633C5A62B05FDDB0018DEB0 /* PetInfoViewModel.swift in Sources */,
 				662CC83B2B03634200059D90 /* OnboardingSecondView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,7 +316,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -306,7 +373,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -397,18 +464,29 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCVersionGroup section */
-		66D041FF2B03518D00E2A6AF /* NotiPet.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				66D042002B03518D00E2A6AF /* NotiPet.xcdatamodel */,
-			);
-			currentVersion = 66D042002B03518D00E2A6AF /* NotiPet.xcdatamodel */;
-			path = NotiPet.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+/* Begin XCRemoteSwiftPackageReference section */
+		66E482342B0A3B22007065B2 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
 		};
-/* End XCVersionGroup section */
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		66E482352B0A3B22007065B2 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66E482342B0A3B22007065B2 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		66E482372B0A3B22007065B2 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 66E482342B0A3B22007065B2 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 66D041E92B03518A00E2A6AF /* Project object */;
 }
