@@ -5,6 +5,8 @@ struct PetInfoView: View {
     @State var isDatePickerPresented: Bool = false
     @StateObject var petInfoVM = PetInfoViewModel()
     
+    @State var userInput : String = ""
+    
     var body: some View {
         VStack {
             Text("우리 아이 정보")
@@ -54,7 +56,6 @@ struct PetInfoView: View {
                         .border(.black)
                         .sheet(isPresented: $isDatePickerPresented) {
                             DatePicker_WheelView(isDatePickerPresented: $isDatePickerPresented, birthDate: $petInfoVM.birthDate)
-                                .frame(height: UIScreen.main.bounds.height / 2) // 화면의 절반만 표시
                         }
                     }
                 }
@@ -79,27 +80,44 @@ struct PetInfoView: View {
                     }
                 }
                 
-                VStack(alignment: .center) {
+                VStack(alignment: .leading) {
                     HStack {
                         Text("성별")
-                        Spacer()
+                        Text(petInfoVM.sexMessage)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
                     }
                     HStack {
                         Button(action: {
                             petInfoVM.sex = "남아"
-                        }, label: {
+                        }) {
                             Text("남아")
-                        })
-                        .buttonStyle(.borderedProminent)
+                                .frame(width: 130, height: 45)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                )
+                        }
+                        .background(petInfoVM.sex == "남아" ? Color.yellow : Color.white)
+                        .cornerRadius(10)
+
+                        Spacer()
                         Button(action: {
                             petInfoVM.sex = "여아"
                         }, label: {
                             Text("여아")
+                                .frame(width: 130, height: 45)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.purple, lineWidth: 1)
+                                )
                         })
-                        .buttonStyle(.borderedProminent)
+                        .background(petInfoVM.sex == "여아" ? Color.yellow : Color.white)
+                        .cornerRadius(10)
                     }
+                    .frame(maxWidth: .infinity)
                 }
-                .background(Color.red)
+                .background(Color.green)
                 .frame(minWidth: 0, maxWidth: .infinity)
             }
             .padding(.bottom, 20)

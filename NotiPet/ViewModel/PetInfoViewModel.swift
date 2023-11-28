@@ -15,6 +15,7 @@ class PetInfoViewModel: ObservableObject {
     @Published var petNameMessage: String = ""
     @Published var speciesMessage: String = ""
     @Published var weightMessage: String = ""
+    @Published var sexMessage: String = ""
     @Published var isValidation: Bool = false
     
     var validPetNamePublisher: AnyPublisher<Bool, Never> {
@@ -31,14 +32,20 @@ class PetInfoViewModel: ObservableObject {
     
     var validWeightPublisher: AnyPublisher<Bool, Never> {
         $weight
-            .map{String($0).count >= 1}
+            .map{(Double($0) != nil) ? true : false}
+            .eraseToAnyPublisher()
+    }
+    
+    var validSexPublisher: AnyPublisher<Bool, Never> {
+        $sex
+            .map{$0 == "" ? false : true}
             .eraseToAnyPublisher()
     }
     
     var validConfirmPublisher: AnyPublisher<Bool, Never> {
         Publishers
-            .CombineLatest3(validPetNamePublisher, validSpeciesPublisher, validWeightPublisher)
-            .map{$0 && $1 && $2}
+            .CombineLatest4(validPetNamePublisher, validSpeciesPublisher, validWeightPublisher, validSexPublisher)
+            .map{$0 && $1 && $2 && $3}
             .eraseToAnyPublisher()
     }
     
@@ -54,7 +61,7 @@ class PetInfoViewModel: ObservableObject {
             .map{$0 ? "" : "한 글자 이상 입력해주세요"}
             .assign(to: \.petNameMessage, on: self)
             .store(in: &subscriptions)
-            
+        
         validSpeciesPublisher
             .receive(on: RunLoop.main)
             .map{$0 ? "" : "한 글자 이상 입력해주세요"}
@@ -63,10 +70,15 @@ class PetInfoViewModel: ObservableObject {
         
         validWeightPublisher
             .receive(on: RunLoop.main)
-            .map{$0 ? "" : "한 글자 이상 입력해주세요"}
+            .map{$0 ? "" : "몸무게를 정확히 입력해주세요"}
             .assign(to: \.weightMessage, on: self)
             .store(in: &subscriptions)
         
+        validSexPublisher
+            .receive(on: RunLoop.main)
+            .map{$0 ? "" : "성별을 선택해주세요"}
+            .assign(to: \.sexMessage, on: self)
+            .store(in: &subscriptions)
         
         validConfirmPublisher
             .receive(on: RunLoop.main)
@@ -90,9 +102,14 @@ class PetInfoViewModel: ObservableObject {
             }).store(in: &subscriptions)
         
         $weight
+            .removeDuplicates(by: { old, new in
+                old == new
+            })
+            .map{$0.prefix(1) == "." ? "0"+$0 : $0}
+            .map{$0.suffix(1) == "." ? $0+"0" : $0}
             .print("weight")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
+            .assign(to: \.weight, on: self)
+            .store(in: &subscriptions)
         
         $sex
             .print("sex")
@@ -113,6 +130,8 @@ class PetInfoViewModel: ObservableObject {
     
     // 펫 정보를 로컬DB에 저장, 갱신
     func infoSave() {
+        print("PetInfoViewModel - infoSave() called")
+        
         if let data = realm.objects(PetInfo.self).first {
             try! realm.write {
                 data.petName = petName
