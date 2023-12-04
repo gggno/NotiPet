@@ -5,6 +5,9 @@ struct MyPageView: View {
     
     var body: some View {
         VStack {
+            HStack {
+            
+            }
             Text("MyPageView")
             Button(action: {
                 isPresented.toggle()

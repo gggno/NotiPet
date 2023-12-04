@@ -1,4 +1,5 @@
 import SwiftUI
+import Photos
 import Combine
 import RealmSwift
 
@@ -6,6 +7,7 @@ class PetInfoViewModel: ObservableObject {
     
     var subscriptions = Set<AnyCancellable>()
     
+    @Published var petProfileUIImage: UIImage = UIImage(systemName: "pawprint.circle.fill")!
     @Published var petName: String = ""
     @Published var species: String = ""
     @Published var birthDate: String = Date().convertDate()
@@ -17,6 +19,8 @@ class PetInfoViewModel: ObservableObject {
     @Published var weightMessage: String = ""
     @Published var sexMessage: String = ""
     @Published var isValidation: Bool = false
+    
+    @Published var isImagePickerPresented: Bool = false
     
     var validPetNamePublisher: AnyPublisher<Bool, Never> {
         $petName
@@ -86,6 +90,11 @@ class PetInfoViewModel: ObservableObject {
             .assign(to: \.isValidation, on: self)
             .store(in: &subscriptions)
         
+        $petProfileUIImage
+            .print("petProfileUIImage")
+            .sink(receiveValue: { _ in
+            }).store(in: &subscriptions)
+        
         $petName
             .print("petName")
             .sink(receiveValue: { _ in
@@ -117,9 +126,14 @@ class PetInfoViewModel: ObservableObject {
             }).store(in: &subscriptions)
     }
     
-    // 정보가 있는지 확인 있으면 화면에 출력하기 위한 용도
+    // 정보가 있는지 확인. 있으면 화면에 출력하기 위한 용도
     func dataConfirm() {
+        print("PetInfoViewModel - dataConfirm() called")
         if let data = realm.objects(PetInfo.self).first {
+            print("dataConfirm() - 로컬디비에 정보가 있다.")
+            if let imageData = data.petProfileImageData {
+                petProfileUIImage = UIImage(data: imageData)!
+            }
             petName = data.petName
             species = data.species
             birthDate = data.birthDate
@@ -132,16 +146,18 @@ class PetInfoViewModel: ObservableObject {
     func infoSave() {
         print("PetInfoViewModel - infoSave() called")
         
-        if let data = realm.objects(PetInfo.self).first {
+        if let data = realm.objects(PetInfo.self).first {   // 갱신
             try! realm.write {
+                data.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
                 data.petName = petName
                 data.species = species
                 data.birthDate = birthDate
                 data.weight = weight
                 data.sex = sex
             }
-        } else {
+        } else {                                            // 저장
             try! realm.write {
+                petInfo.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
                 petInfo.petName = petName
                 petInfo.species = species
                 petInfo.birthDate = birthDate
@@ -150,6 +166,36 @@ class PetInfoViewModel: ObservableObject {
                 
                 realm.add(petInfo)
             }
+        }
+    }
+    
+    // 사진 권한
+    func checkAndShowImagePicker() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            print("사진 권한 허용")
+            // 권한이 허용된 경우
+            isImagePickerPresented.toggle()
+        case .restricted:
+            // 사용자가 권한 거부 또는 제한
+            print("사진권한 제한")
+            // 권한을 요청하거나, 사용자에게 설정 앱으로 이동하도록 안내할 수 있습니다.
+        case .denied:
+            print("사진 권한 거부")
+        case .notDetermined:
+            print("아직 사진 권한을 결정하지 않음")
+            // 사용자가 아직 권한을 결정하지 않음
+            PHPhotoLibrary.requestAuthorization { newStatus in
+                if newStatus == .authorized {
+                    DispatchQueue.main.async {
+                        print("사진 권한이 허용됨")
+                        self.isImagePickerPresented.toggle()
+                    }
+                }
+            }
+        @unknown default:
+            fatalError("Unhandled case")
         }
     }
     

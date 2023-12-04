@@ -2,6 +2,7 @@ import Foundation
 import RealmSwift
 
 class PetInfo: Object {
+    @Persisted var petProfileImageData: Data?
     @Persisted var petName: String = ""
     @Persisted var species: String = ""
     @Persisted var birthDate: String = ""

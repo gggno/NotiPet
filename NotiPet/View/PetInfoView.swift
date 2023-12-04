@@ -1,17 +1,47 @@
 import SwiftUI
+import Photos
 
 struct PetInfoView: View {
-    @Binding var isPresented: Bool
-    @State var isDatePickerPresented: Bool = false
+    @Binding var isPresented: Bool  // 등록하기 버튼 터치에 사용
+    @State var isDatePickerPresented: Bool = false  // 생년월일 버튼에 사용
+    @State var isImageChoicePresented: Bool = false // 프로필이미지 종류 선택 버튼에 사용
     @StateObject var petInfoVM = PetInfoViewModel()
-    
-    @State var userInput : String = ""
     
     var body: some View {
         VStack {
             Text("우리 아이 정보")
             Spacer()
             Group {
+                Button(action: {
+                    isImageChoicePresented.toggle()
+                }, label: {
+                    Image(uiImage: petInfoVM.petProfileUIImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill )
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                        .frame(width: 100, height: 100)
+                })
+                .confirmationDialog(
+                    "프로필 이미지 설정",
+                    isPresented: $isImageChoicePresented,
+                    actions: {
+                        Button(action: {
+                            petInfoVM.checkAndShowImagePicker()
+                        }, label: {
+                            Text("사진 선택")
+                        })
+                        
+                        Button(action: {
+                            petInfoVM.petProfileUIImage = UIImage(systemName: "teddybear.fill")!
+                        }, label: {
+                            Text("기본 이미지로 설정")
+                        })
+                    })
+                .sheet(isPresented: $petInfoVM.isImagePickerPresented) {
+                    ImagePicker(selectedUIImage: $petInfoVM.petProfileUIImage)
+                }
+                
                 VStack(alignment: .leading) {
                     HStack {
                         Text("이름")
@@ -100,7 +130,7 @@ struct PetInfoView: View {
                         }
                         .background(petInfoVM.sex == "남아" ? Color.yellow : Color.white)
                         .cornerRadius(10)
-
+                        
                         Spacer()
                         Button(action: {
                             petInfoVM.sex = "여아"
@@ -135,4 +165,6 @@ struct PetInfoView: View {
         .onAppear(perform : UIApplication.shared.hideKeyboard)
         .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
     }
+    
+    
 }
