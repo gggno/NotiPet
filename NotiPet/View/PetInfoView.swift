@@ -155,6 +155,7 @@ struct PetInfoView: View {
             Button(action: {
                 isPresented.toggle()
                 petInfoVM.infoSave()
+                petInfoVM.sendData()
             }, label: {
                 Text("등록하기")
             })

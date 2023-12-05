@@ -199,4 +199,17 @@ class PetInfoViewModel: ObservableObject {
         }
     }
     
+    func sendData() {
+        let infoDatas: [String: Any] = [
+            "petProfileUIImage": petProfileUIImage,
+            "petName": petName,
+            "species": species,
+            "birthDate": birthDate,
+            "weight": weight,
+            "sex": sex
+        ]
+        
+        NotificationCenter.default.post(name: NSNotification.Name("PetInfosData"), object: nil, userInfo: infoDatas)
+    }
+    
 }

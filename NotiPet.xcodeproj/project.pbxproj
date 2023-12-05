@@ -31,6 +31,7 @@
 		66E482382B0A3B22007065B2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 66E482372B0A3B22007065B2 /* RealmSwift */; };
 		66E5B7142B1DB6C000AAAD8B /* PracView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E5B7132B1DB6C000AAAD8B /* PracView.swift */; };
 		66E5B7162B1E160800AAAD8B /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E5B7152B1E160800AAAD8B /* MyPageViewModel.swift */; };
+		66E5B7182B1EFB0800AAAD8B /* String + convertDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E5B7172B1EFB0800AAAD8B /* String + convertDate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		66D041FB2B03518D00E2A6AF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		66E5B7132B1DB6C000AAAD8B /* PracView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracView.swift; sourceTree = "<group>"; };
 		66E5B7152B1E160800AAAD8B /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		66E5B7172B1EFB0800AAAD8B /* String + convertDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + convertDate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +91,8 @@
 				662CC8372B0362FF00059D90 /* OnboardingViews */,
 				662CC8402B049F0C00059D90 /* HomeView.swift */,
 				662CC8422B049F2900059D90 /* NotiView.swift */,
-				662CC8442B049F3A00059D90 /* MyPageView.swift */,
 				662CC83E2B03BE5100059D90 /* PetInfoView.swift */,
+				662CC8442B049F3A00059D90 /* MyPageView.swift */,
 				6633C5AB2B06401A0018DEB0 /* Custom */,
 			);
 			path = View;
@@ -128,6 +130,7 @@
 				66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */,
 				660B75822B14797E00161AF0 /* Date + convert.swift */,
 				66BB25AB2B18B6FB008AACE6 /* View + Library.swift */,
+				66E5B7172B1EFB0800AAAD8B /* String + convertDate.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				662CC8392B03632B00059D90 /* OnboardingFirstView.swift in Sources */,
 				66D041F72B03518A00E2A6AF /* ContentView.swift in Sources */,
 				662CC8412B049F0C00059D90 /* HomeView.swift in Sources */,
+				66E5B7182B1EFB0800AAAD8B /* String + convertDate.swift in Sources */,
 				66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */,
 				662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */,
 				662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */,
