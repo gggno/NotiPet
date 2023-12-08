@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MyPageView: View {
     @State var isPresented: Bool = false
+    @State var isAnniViewPresented: Bool = false
     @StateObject var myPageVM = MyPageViewModel()
     
     var body: some View {
@@ -49,10 +50,14 @@ struct MyPageView: View {
                     .lineLimit(1)
                 Spacer()
                 Button(action: {
-                    // 특별한 기념일 뷰 만들어서 이동 로직 구현하기
+                    isAnniViewPresented.toggle()
                 }, label: {
                     Image(systemName: "plus")
                 })
+                .navigationTitle("기념일 추가")
+                .fullScreenCover(isPresented: $isAnniViewPresented) {
+                    AnniversaryView(anniContent: $myPageVM.anniContent, anniContentMessage: $myPageVM.anniContentMessage, anniDate: $myPageVM.anniDate)
+                }
             }
             ForEach(myPageVM.anniversaryDatas, id: \.self) { data in
                 // 특별한 기념일 뷰(간략한 버전) 만들어서 Text 대신 넣어서 구현하기

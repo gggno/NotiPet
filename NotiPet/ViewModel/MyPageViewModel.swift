@@ -15,6 +15,17 @@ class MyPageViewModel: ObservableObject {
     
     @Published var anniversaryDatas: [AnniversaryData] = []
     
+    @Published var anniContent: String = ""
+    @Published var anniContentMessage: String = ""
+    @Published var anniDate: String = ""
+    
+    
+    var validAnniContentPublisher: AnyPublisher<Bool, Never> {
+        $anniContent
+            .map{$0.count >= 1}
+            .eraseToAnyPublisher()
+    }
+    
     let petInfo = PetInfo()
     let realm = try! Realm()
     
@@ -25,6 +36,11 @@ class MyPageViewModel: ObservableObject {
         
         NotificationCenter.default.addObserver(self, selector: #selector(recievedDatas(_:)), name: NSNotification.Name("PetInfosData"), object: nil)
         
+        validAnniContentPublisher
+            .receive(on: RunLoop.main)
+            .map{$0 ? "" : "한 글자 이상 입력해주세요"}
+            .assign(to: \.anniContentMessage, on: self)
+            .store(in: &subscriptions)
     }
     
     // 로컬 DB에서 가져와 처음 데이터 저장
