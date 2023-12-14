@@ -19,7 +19,6 @@ class MyPageViewModel: ObservableObject {
     @Published var anniContentMessage: String = ""
     @Published var anniDate: String = ""
     
-    
     var validAnniContentPublisher: AnyPublisher<Bool, Never> {
         $anniContent
             .map{$0.count >= 1}
@@ -36,14 +35,10 @@ class MyPageViewModel: ObservableObject {
         
         NotificationCenter.default.addObserver(self, selector: #selector(recievedDatas(_:)), name: NSNotification.Name("PetInfosData"), object: nil)
         
-        validAnniContentPublisher
-            .receive(on: RunLoop.main)
-            .map{$0 ? "" : "한 글자 이상 입력해주세요"}
-            .assign(to: \.anniContentMessage, on: self)
-            .store(in: &subscriptions)
+        NotificationCenter.default.addObserver(self, selector: #selector(anniDatasRecieved(_:)), name: NSNotification.Name("anniDatas"), object: nil)
     }
     
-    // 로컬 DB에서 가져와 처음 데이터 저장
+    // 로컬 DB에서 가져와 화면에 데이터 뿌려주기
     func getInfoFromDB() {
         print("MyPageViewModel - getInfoFromDB() called")
         if let data = realm.objects(PetInfo.self).first {
@@ -57,7 +52,7 @@ class MyPageViewModel: ObservableObject {
             weight = data.weight
             sex = data.sex
             
-            anniversaryDatas = Array(data.anniversaryDatas)
+            anniversaryDatas = Array(data.anniversaryDatas).sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
         }
     }
     
@@ -80,6 +75,17 @@ class MyPageViewModel: ObservableObject {
             self.sex = sex
             
             self.anniversaryDatas = anniversaryDatas.sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
+        }
+    }
+    
+    @objc func anniDatasRecieved(_ notification: NSNotification) {
+        print("MyPageViewModel - anniDatasRecieved() called")
+        if let userInfo = notification.userInfo,
+           let anniversaryDatas = userInfo["anniversaryDatas"] as? [AnniversaryData] {
+            
+            print("1: \(self.anniversaryDatas)")
+            self.anniversaryDatas = anniversaryDatas.sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
+            print("2: \(self.anniversaryDatas)")
         }
     }
     

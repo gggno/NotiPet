@@ -7,11 +7,14 @@ struct DatePicker_WheelView: View {
     var currentDate = Date()
     
     var body: some View {
-        DatePicker("", selection: $date, in: ...currentDate,
+        DatePicker("", 
+                   selection: $date,
+                   in: ...currentDate,
                    displayedComponents: .date)
         .datePickerStyle(WheelDatePickerStyle())
         .labelsHidden()
         .environment(\.locale, Locale(identifier: "ko_KR"))
+        
         Button(action: {
             birthDate = date.convertDate()
             isDatePickerPresented.toggle()

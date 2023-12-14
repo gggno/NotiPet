@@ -1,30 +1,60 @@
 import SwiftUI
 
 struct AnniversaryView: View {
-    @Binding var anniContent: String
-    @Binding var anniContentMessage: String
-    @Binding var anniDate: String
+    @Binding var isAnniViewPresented: Bool
+    @StateObject var anniVM = AnniversaryViewModel()
     
     var body: some View {
-        VStack {
-            Text("기념일 추가")
-            Spacer()
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("내용")
-                    Text(anniContentMessage)
-                        .font(.footnote)
-                        .foregroundStyle(.red)
+        NavigationView {
+            VStack {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("내용")
+                        Text(anniVM.anniContentMessage)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                    }
+                    TextField(
+                        "",
+                        text: $anniVM.anniContent
+                    )
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+                    .border(.black)
                 }
-                TextField(
-                    "",
-                    text: $anniContent
-                )
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                .border(.black)
+                
+                Spacer()
+                    .frame(height: 30)
+                
+                DatePicker_Graphical(anniContent: $anniVM.anniContent, anniDate: $anniVM.anniDate)
+                    .frame(maxWidth: .infinity)
+                
+                Spacer()
+                
+                Button(action: {
+                    anniVM.anniInfoSave()
+                    isAnniViewPresented.toggle()
+                }, label: {
+                    Text("추가하기")
+                })
+                .padding(.bottom, 70)
+                .disabled(!anniVM.isValidation)
             }
-            DatePicker_Graphical()
+            .navigationTitle("기념일 추가")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        isAnniViewPresented.toggle()
+                    }, label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 20))
+                            .foregroundColor(.black)
+                    })
+                }
+            }
+            .onAppear(perform : UIApplication.shared.hideKeyboard)
+            .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
         }
     }
 }
