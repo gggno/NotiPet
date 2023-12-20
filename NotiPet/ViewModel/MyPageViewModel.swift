@@ -52,7 +52,18 @@ class MyPageViewModel: ObservableObject {
             weight = data.weight
             sex = data.sex
             
-            anniversaryDatas = Array(data.anniversaryDatas).sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
+            anniversaryDatas = Array(data.anniversaryDatas).sorted {
+                if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
+                   let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
+                    if number1 != number2 {
+                        return number1 < number2
+                    }
+                } else {
+                    return $0.dDay > $1.dDay
+                }
+                
+                return $0.content < $1.content
+            }
         }
     }
     
@@ -74,19 +85,53 @@ class MyPageViewModel: ObservableObject {
             self.weight = weight
             self.sex = sex
             
-            self.anniversaryDatas = anniversaryDatas.sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
+            self.anniversaryDatas = anniversaryDatas.sorted {
+                if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
+                   let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
+                    if number1 != number2 {
+                        return number1 < number2
+                    }
+                } else {
+                    return $0.dDay > $1.dDay
+                }
+                
+                return $0.content < $1.content
+            }
         }
     }
     
+    // 추가된 기념일 데이터 받기
     @objc func anniDatasRecieved(_ notification: NSNotification) {
         print("MyPageViewModel - anniDatasRecieved() called")
         if let userInfo = notification.userInfo,
            let anniversaryDatas = userInfo["anniversaryDatas"] as? [AnniversaryData] {
             
-            print("1: \(self.anniversaryDatas)")
-            self.anniversaryDatas = anniversaryDatas.sorted{$0.content < $1.content}.sorted{$0.dDay < $1.dDay}
-            print("2: \(self.anniversaryDatas)")
+            
+            
+            self.anniversaryDatas = anniversaryDatas.sorted {
+                if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
+                   let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
+                    if number1 != number2 {
+                        return number1 < number2
+                    }
+                } else {
+                    return $0.dDay > $1.dDay
+                }
+                
+                return $0.content < $1.content
+            }
         }
+    }
+    
+    // 기념일 삭제하기(옆으로 슬라이드 해서 삭제할 때 이용)
+    func deleteRow(indexSet: IndexSet) {
+        try! realm.write {
+            indexSet.forEach {
+                realm.delete(self.anniversaryDatas[$0])
+            }
+        }
+        
+        anniversaryDatas.remove(atOffsets: indexSet)
     }
     
 }

@@ -155,11 +155,15 @@ class PetInfoViewModel: ObservableObject {
             print("로컬 DB 갱신")
             try! realm.write {
                 if data.birthDate != birthDate {    // 생일이 변경되었으면
-                    var filterDatas = data.anniversaryDatas
+                    let filterDatas = data.anniversaryDatas
                     let filterIndex = filterDatas.firstIndex(where: {$0.content == "생일"}) ?? 0
                     
                     filterDatas[filterIndex].dDay = calculateBirthdayDday(birthdate: birthDate)
+                    filterDatas[filterIndex].dueDate = calculateBirthdayYear(birthdate: birthDate)
                     data.anniversaryDatas = filterDatas
+                    
+                    
+                    
                 }
                 
                 data.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
@@ -179,16 +183,20 @@ class PetInfoViewModel: ObservableObject {
                 petInfo.weight = weight
                 petInfo.sex = sex
                 
-                petInfo.anniversaryDatas.append(AnniversaryData(dDay: calculateBirthdayDday(birthdate: birthDate), content: "생일"))
-                petInfo.anniversaryDatas.append(AnniversaryData(dDay: calculateThousandDay(birthDateDay: birthDate.dayConvertDate()), content: "태어난지 \(calculateThousand(birthDateDay: birthDate.dayConvertDate()))일"))
+                petInfo.anniversaryDatas.append(AnniversaryData(dDay: calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: calculateBirthdayYear(birthdate: birthDate)))
                 
                 // List를 배열로 변환 후 정렬
                 let sortedArray = Array(petInfo.anniversaryDatas).sorted {
-                    if $0.dDay == $1.dDay {
-                        return $0.content < $1.content
+                    if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
+                       let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
+                        if number1 != number2 {
+                            return number1 < number2
+                        }
                     } else {
-                        return $0.dDay < $1.dDay
+                        return $0.dDay > $1.dDay
                     }
+                    
+                    return $0.content < $1.content
                 }
                 print(sortedArray)
                 
@@ -250,6 +258,43 @@ class PetInfoViewModel: ObservableObject {
     
     // 생일 디데이 계산
     func calculateBirthdayDday(birthdate: String) -> String {
+        print("PetInfoViewModel - calculateBirthdayDday() called")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+        
+        let currentStringDate = Date().convertDate()
+        
+        let currentArr = currentStringDate.split(separator: " ").map{String($0)}
+        let birthArr = birthdate.split(separator: " ").map{String($0)}
+        
+        let thisYearBirthDate = dateFormatter.date(from: [currentArr[0], birthArr[1], birthArr[2]].joined(separator: " "))!
+        let currentDate = dateFormatter.date(from: currentStringDate)!
+        print("currentDate: \(currentDate), thisYearBirthDate: \(thisYearBirthDate)")
+        if currentDate > thisYearBirthDate {    // 올해 생일이 지난 경우
+            print("올해 생일 지남")
+            let calendar = Calendar.current
+            let nextBirth = calendar.date(byAdding: .year, value: 1, to: thisYearBirthDate)!
+            let components = calendar.dateComponents([.day], from: currentDate, to: nextBirth)
+            let dDay = components.day!
+            return "D\(dDay * -1)"
+            
+        } else if currentDate < thisYearBirthDate { // 올해 생일이 안 지난 경우
+            print("올해 생일 안 지남")
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.day], from: currentDate, to: thisYearBirthDate)
+            let dDay = components.day!
+            return "D\(dDay * -1)"
+            
+        } else { // 오늘이 생일인 경우
+            print("오늘이 생일")
+            return "D-Day"
+        }
+    }
+    
+    // 매년 생일 날짜 계산
+    func calculateBirthdayYear(birthdate: String) -> String {
+        print("PetInfoViewModel - calculateBirthdayYear() called")
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         
@@ -265,42 +310,24 @@ class PetInfoViewModel: ObservableObject {
             print("올해 생일 지남")
             let calendar = Calendar.current
             let nextBirth = calendar.date(byAdding: .year, value: 1, to: thisYearBirthDate)!
-            let components = calendar.dateComponents([.day], from: currentDate, to: nextBirth)
+            let components = calendar.dateComponents([.year, .month ,.day], from: currentDate, to: nextBirth)
+            let dYear = components.year!
+            let dMonth = components.month!
             let dDay = components.day!
-            return "D-\(dDay)"
+            
+            return "\(dYear)년 \(dMonth)월 \(dDay)일"
             
         } else if currentDate < thisYearBirthDate { // 올해 생일이 안 지난 경우
             print("올해 생일 안 지남")
             let calendar = Calendar.current
-            let components = calendar.dateComponents([.day], from: currentDate, to: thisYearBirthDate)
+            let components = calendar.dateComponents([.year, .month ,.day], from: currentDate, to: thisYearBirthDate)
             let dDay = components.day!
-            return "D-\(dDay)"
+            
+            return Date(timeIntervalSinceNow: TimeInterval(dDay*86400)).convertDate()
             
         } else { // 오늘이 생일인 경우
             print("오늘이 생일")
-            return "D-Day"
-        }
-    }
-    
-    // 1000일 디데이 계산(ex D-78)
-    func calculateThousandDay(birthDateDay: String) -> String {
-        if Int(birthDateDay)! % 1000 != 0 {
-            var thousandNum = Int(birthDateDay)! / 1000
-            thousandNum = (thousandNum+1) * 1000
-            return "D-\(thousandNum - Int(birthDateDay)!)"
-        } else {
-            return "D-Day"
-        }
-    }
-    
-    // 1000일 단위 계산(ex 태어난지 1000일)
-    func calculateThousand(birthDateDay: String) -> Int {
-        let thousandNum = Int(birthDateDay)! / 1000
-        
-        if Int(birthDateDay)! % 1000 != 0 {
-            return (thousandNum + 1) * 1000
-        } else {
-            return thousandNum * 1000
+            return birthdate
         }
     }
     

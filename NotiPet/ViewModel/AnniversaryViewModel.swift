@@ -24,6 +24,11 @@ class AnniversaryViewModel: ObservableObject {
     init() {
         print("AnniversaryViewModel - init() called")
         
+        $anniDate
+            .print("anniDate")
+            .sink(receiveValue: { _ in
+            }).store(in: &subscriptions)
+        
         validAnniContentPublisher
             .receive(on: RunLoop.main)
             .map{$0 ? "" : "한 글자 이상 입력해주세요"}
@@ -38,13 +43,19 @@ class AnniversaryViewModel: ObservableObject {
         
     }
     
+    // 기념일 데이터 추가 후 전달
     func anniInfoSave() {
         print("AnniversaryViewModel - anniInfoSave()")
         
         if let allData = realm.objects(PetInfo.self).first {
             print("로컬 DB에 기념일 데이터 추가")
             try! realm.write {
-                allData.anniversaryDatas.append(AnniversaryData(dDay: "D-\(anniDate.dayConvertDate())", content: anniContent))
+                if anniDate.dayConvertDate() == "0" {
+                    allData.anniversaryDatas.append(AnniversaryData(dDay: "D-Day", content: anniContent, dueDate: anniDate))
+                } else {
+                    allData.anniversaryDatas.append(AnniversaryData(dDay: "D\(anniDate.dayConvertDate())", content: anniContent, dueDate: anniDate))
+                }
+                
             }
             
             NotificationCenter.default.post(name: NSNotification.Name("anniDatas"), object: nil, userInfo: ["anniversaryDatas": Array(allData.anniversaryDatas)])

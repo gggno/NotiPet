@@ -21,17 +21,15 @@ struct MyPageView: View {
                             Text(myPageVM.petName)
                                 .lineLimit(1)
                             Spacer()
-                            Button(action: {
-                                
-                                isPresented.toggle()
-                            }) {
-                                Image(systemName: "gearshape.fill")
-                                    .imageScale(.large)
-                                    .foregroundColor(.blue)
-                            }
-                            .fullScreenCover(isPresented: $isPresented, content: {
-                                PetInfoView(isPresented: $isPresented)
-                            })
+                            Image(systemName: "gearshape.fill")
+                                .imageScale(.large)
+                                .foregroundColor(.blue)
+                                .onTapGesture {
+                                    isPresented.toggle()
+                                }
+                                .fullScreenCover(isPresented: $isPresented, content: {
+                                    PetInfoView(isPresented: $isPresented)
+                                })
                         }
                         Text("함께한지 \(myPageVM.birthDate.dayConvertDate())일")
                             .lineLimit(1)
@@ -40,6 +38,7 @@ struct MyPageView: View {
                     }
                 }
             }
+            .listRowSeparator(.hidden)
             Spacer()
                 .frame(height: 150)
             
@@ -48,23 +47,29 @@ struct MyPageView: View {
                 Spacer()
                 Text("\(myPageVM.petName)의 특별한 기념일")
                     .lineLimit(1)
+                    
                 Spacer()
-                Button(action: {
-                    isAnniViewPresented.toggle()
-                }, label: {
-                    Image(systemName: "plus")
-                })
-                .navigationTitle("기념일 추가")
-                .fullScreenCover(isPresented: $isAnniViewPresented) {
-                    AnniversaryView(isAnniViewPresented: $isAnniViewPresented)
-                }
+                Image(systemName: "plus")
+                    .onTapGesture {
+                        isAnniViewPresented.toggle()
+                    }
+                    .fullScreenCover(isPresented: $isAnniViewPresented) {
+                        AnniversaryView(isAnniViewPresented: $isAnniViewPresented)
+                    }
             }
+            .listRowSeparator(.hidden)
+            
             ForEach(myPageVM.anniversaryDatas, id: \.self) { data in
                 HStack {
                     Text(data.dDay)
                     Text(data.content)
+                    Spacer()
+                    Text(data.dueDate)
                 }
             }
+            .onDelete(perform: { indexSet in
+                myPageVM.deleteRow(indexSet: indexSet)
+            })
             
         }
         .listStyle(.plain)

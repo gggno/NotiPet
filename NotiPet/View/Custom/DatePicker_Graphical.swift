@@ -17,6 +17,9 @@ struct DatePicker_Graphical: View {
         .labelsHidden()
         .environment(\.locale, Locale(identifier: "ko_KR"))
         .onChange(of: selectedDate) { oldValue, newValue in
+            anniDate = newValue.convertDate()
+        }
+        .onAppear {
             anniDate = selectedDate.convertDate()
         }
     }
