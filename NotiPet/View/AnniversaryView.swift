@@ -33,12 +33,17 @@ struct AnniversaryView: View {
                 
                 Button(action: {
                     anniVM.anniInfoSave()
-                    isAnniViewPresented.toggle()
+                    if !anniVM.showBirthdayAlert {
+                        isAnniViewPresented.toggle()
+                    }
                 }, label: {
                     Text("추가하기")
                 })
                 .padding(.bottom, 70)
                 .disabled(!anniVM.isValidation)
+                .alert(isPresented: $anniVM.showBirthdayAlert) {
+                    Alert(title: Text("알림"), message: Text("생일은 추가할 수 없습니다."), dismissButton: .default(Text("확인")))
+                }
             }
             .navigationTitle("기념일 추가")
             .navigationBarTitleDisplayMode(.inline)
@@ -53,9 +58,9 @@ struct AnniversaryView: View {
                     })
                 }
             }
-            .onAppear(perform : UIApplication.shared.hideKeyboard)
             .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
         }
+        .onAppear(perform : UIApplication.shared.hideKeyboard)
     }
 }
 

@@ -31,7 +31,7 @@ struct MyPageView: View {
                                     PetInfoView(isPresented: $isPresented)
                                 })
                         }
-                        Text("함께한지 \(myPageVM.birthDate.dayConvertDate())일")
+                        Text("함께한지 \(Int(myPageVM.birthDate.dayConvertDate())! + 1)일")
                             .lineLimit(1)
                         Text("\(myPageVM.species), \(myPageVM.weight)kg")
                             .lineLimit(1)
@@ -47,7 +47,7 @@ struct MyPageView: View {
                 Spacer()
                 Text("\(myPageVM.petName)의 특별한 기념일")
                     .lineLimit(1)
-                    
+                
                 Spacer()
                 Image(systemName: "plus")
                     .onTapGesture {
@@ -70,9 +70,11 @@ struct MyPageView: View {
             .onDelete(perform: { indexSet in
                 myPageVM.deleteRow(indexSet: indexSet)
             })
-            
         }
         .listStyle(.plain)
+        .alert(isPresented: $myPageVM.showBirthdayAlert) {
+            Alert(title: Text("알림"), message: Text("생일은 삭제할 수 없습니다."), dismissButton: .default(Text("확인")))
+        }
     }
 }
 

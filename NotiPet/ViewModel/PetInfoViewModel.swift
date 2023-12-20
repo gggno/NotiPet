@@ -158,12 +158,9 @@ class PetInfoViewModel: ObservableObject {
                     let filterDatas = data.anniversaryDatas
                     let filterIndex = filterDatas.firstIndex(where: {$0.content == "생일"}) ?? 0
                     
-                    filterDatas[filterIndex].dDay = calculateBirthdayDday(birthdate: birthDate)
-                    filterDatas[filterIndex].dueDate = calculateBirthdayYear(birthdate: birthDate)
+                    filterDatas[filterIndex].dDay = PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate)
+                    filterDatas[filterIndex].dueDate = PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)
                     data.anniversaryDatas = filterDatas
-                    
-                    
-                    
                 }
                 
                 data.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
@@ -183,7 +180,7 @@ class PetInfoViewModel: ObservableObject {
                 petInfo.weight = weight
                 petInfo.sex = sex
                 
-                petInfo.anniversaryDatas.append(AnniversaryData(dDay: calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: calculateBirthdayYear(birthdate: birthDate)))
+                petInfo.anniversaryDatas.append(AnniversaryData(dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)))
                 
                 // List를 배열로 변환 후 정렬
                 let sortedArray = Array(petInfo.anniversaryDatas).sorted {
@@ -257,7 +254,7 @@ class PetInfoViewModel: ObservableObject {
     }
     
     // 생일 디데이 계산
-    func calculateBirthdayDday(birthdate: String) -> String {
+    static func calculateBirthdayDday(birthdate: String) -> String {
         print("PetInfoViewModel - calculateBirthdayDday() called")
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
@@ -292,7 +289,7 @@ class PetInfoViewModel: ObservableObject {
     }
     
     // 매년 생일 날짜 계산
-    func calculateBirthdayYear(birthdate: String) -> String {
+    static func calculateBirthdayYear(birthdate: String) -> String {
         print("PetInfoViewModel - calculateBirthdayYear() called")
         
         let dateFormatter = DateFormatter()
@@ -310,12 +307,8 @@ class PetInfoViewModel: ObservableObject {
             print("올해 생일 지남")
             let calendar = Calendar.current
             let nextBirth = calendar.date(byAdding: .year, value: 1, to: thisYearBirthDate)!
-            let components = calendar.dateComponents([.year, .month ,.day], from: currentDate, to: nextBirth)
-            let dYear = components.year!
-            let dMonth = components.month!
-            let dDay = components.day!
             
-            return "\(dYear)년 \(dMonth)월 \(dDay)일"
+            return nextBirth.convertDate()
             
         } else if currentDate < thisYearBirthDate { // 올해 생일이 안 지난 경우
             print("올해 생일 안 지남")
@@ -327,7 +320,7 @@ class PetInfoViewModel: ObservableObject {
             
         } else { // 오늘이 생일인 경우
             print("오늘이 생일")
-            return birthdate
+            return currentDate.convertDate()
         }
     }
     

@@ -12,6 +12,8 @@ class AnniversaryViewModel: ObservableObject {
     
     @Published var isValidation: Bool = false
     
+    @Published var showBirthdayAlert = false
+    
     var validAnniContentPublisher: AnyPublisher<Bool, Never> {
         $anniContent
             .map{$0.count >= 1}
@@ -46,6 +48,12 @@ class AnniversaryViewModel: ObservableObject {
     // 기념일 데이터 추가 후 전달
     func anniInfoSave() {
         print("AnniversaryViewModel - anniInfoSave()")
+        
+        if anniContent == "생일" {
+            
+            showBirthdayAlert.toggle()
+            return
+        }
         
         if let allData = realm.objects(PetInfo.self).first {
             print("로컬 DB에 기념일 데이터 추가")

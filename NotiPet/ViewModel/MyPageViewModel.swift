@@ -19,6 +19,8 @@ class MyPageViewModel: ObservableObject {
     @Published var anniContentMessage: String = ""
     @Published var anniDate: String = ""
     
+    @Published var showBirthdayAlert = false
+    
     var validAnniContentPublisher: AnyPublisher<Bool, Never> {
         $anniContent
             .map{$0.count >= 1}
@@ -52,7 +54,7 @@ class MyPageViewModel: ObservableObject {
             weight = data.weight
             sex = data.sex
             
-            anniversaryDatas = Array(data.anniversaryDatas).sorted {
+            anniversaryDatas = filterdDayDatas(anniDatas: Array(data.anniversaryDatas)).sorted {
                 if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
                    let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
                     if number1 != number2 {
@@ -64,6 +66,8 @@ class MyPageViewModel: ObservableObject {
                 
                 return $0.content < $1.content
             }
+            
+            
         }
     }
     
@@ -106,8 +110,6 @@ class MyPageViewModel: ObservableObject {
         if let userInfo = notification.userInfo,
            let anniversaryDatas = userInfo["anniversaryDatas"] as? [AnniversaryData] {
             
-            
-            
             self.anniversaryDatas = anniversaryDatas.sorted {
                 if let number1 = Int($0.dDay.components(separatedBy: "-").last ?? ""),
                    let number2 = Int($1.dDay.components(separatedBy: "-").last ?? "") {
@@ -127,11 +129,69 @@ class MyPageViewModel: ObservableObject {
     func deleteRow(indexSet: IndexSet) {
         try! realm.write {
             indexSet.forEach {
-                realm.delete(self.anniversaryDatas[$0])
+                if self.anniversaryDatas[$0].content != "생일" {
+                    realm.delete(self.anniversaryDatas[$0])
+                    anniversaryDatas.remove(atOffsets: indexSet)
+                } else {
+                    showBirthdayAlert = true
+                }
+            }
+        }
+    }
+    
+    // 기념일 날짜 업데이트, 지나면 삭제하기
+    func filterdDayDatas(anniDatas: [AnniversaryData]) -> [AnniversaryData] {
+        print("MyPageViewModel - filterdDayDatas() called")
+        var filterDatas: [AnniversaryData] = []
+        
+        for item in anniDatas {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+            dateFormatter.timeZone = TimeZone(identifier: "UTC")
+            
+            guard let targetDate = dateFormatter.date(from: item.dueDate)?.onlyDate else {
+                print("targetDate Error")
+                return []
+            }
+            
+            // 현재 날짜 얻어오기
+            let currentDate = Date().onlyDate
+            
+            // 날짜 차이 계산
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.day], from: targetDate, to: currentDate)
+            
+            // 차이 출력
+            if let daysDifference = components.day {
+                print("item.dDay: \(item.dDay), item.content: \(item.content), item.dueDate: \(item.dueDate), daysDifference: \(daysDifference)")
+                if daysDifference < 0 {         // 일반적인 디데이 계산
+                    filterDatas.append(AnniversaryData(dDay: "D\(daysDifference)", content: item.content, dueDate: item.dueDate))
+                    
+                } else if daysDifference == 0 { // 오늘이 디데이일 때
+                    filterDatas.append(AnniversaryData(dDay: "D-Day", content: item.content, dueDate: item.dueDate))
+                    
+                } else {                        // 디데이가 지났을 때
+                    if item.content == "생일" {
+                        filterDatas.append(AnniversaryData(dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)))
+                        
+                    } else {
+                        try! realm.write {
+                            realm.delete(item)
+                        }
+                    }
+                }   
             }
         }
         
-        anniversaryDatas.remove(atOffsets: indexSet)
+        if let data = realm.objects(PetInfo.self).first {
+            print("날짜 업데이트로 인한 로컬 DB 갱신")
+            try! realm.write {
+                data.anniversaryDatas.removeAll()
+                data.anniversaryDatas.append(objectsIn: filterDatas)
+            }
+        }
+        
+        return filterDatas
     }
     
 }
