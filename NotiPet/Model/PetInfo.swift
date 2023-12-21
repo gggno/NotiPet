@@ -12,14 +12,16 @@ class PetInfo: Object {
 }
 
 class AnniversaryData: Object {
+    @Persisted var identifier: String
     @Persisted var dDay: String
     @Persisted var content: String
     @Persisted var dueDate: String
     
-    convenience init(dDay: String, content: String, dueDate: String) {
-            self.init()
-            self.dDay = dDay
-            self.content = content
-            self.dueDate = dueDate
-        }
+    convenience init(identifier: String, dDay: String, content: String, dueDate: String) {
+        self.init()
+        self.identifier = identifier
+        self.dDay = dDay
+        self.content = content
+        self.dueDate = dueDate
+    }
 }

@@ -160,7 +160,16 @@ class PetInfoViewModel: ObservableObject {
                     
                     filterDatas[filterIndex].dDay = PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate)
                     filterDatas[filterIndex].dueDate = PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)
+                    
                     data.anniversaryDatas = filterDatas
+                    
+                    // 새로 등록된 생일 로컬 푸시 알림 등록
+                    NotificationHandler.shered.anniversaryNotification(
+                        identifier: filterDatas[filterIndex].identifier,
+                        dateString: filterDatas[filterIndex].dueDate,
+                        title: "기념일 알림",
+                        body: filterDatas[filterIndex].content
+                    )
                 }
                 
                 data.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
@@ -180,7 +189,16 @@ class PetInfoViewModel: ObservableObject {
                 petInfo.weight = weight
                 petInfo.sex = sex
                 
-                petInfo.anniversaryDatas.append(AnniversaryData(dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)))
+                let birthdayData = AnniversaryData(identifier: UUID().uuidString, dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate))
+                
+                petInfo.anniversaryDatas.append(birthdayData)
+                
+                // 로컬 푸시 알림 등록
+                NotificationHandler.shered.anniversaryNotification(
+                    identifier: birthdayData.identifier,
+                    dateString: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate),
+                    title: "기념일 알림", body: birthdayData.content
+                )
                 
                 // List를 배열로 변환 후 정렬
                 let sortedArray = Array(petInfo.anniversaryDatas).sorted {
@@ -221,36 +239,6 @@ class PetInfoViewModel: ObservableObject {
         
         // MyPageViewModel - recievedDatas로 데이터 전달
         NotificationCenter.default.post(name: NSNotification.Name("PetInfosData"), object: nil, userInfo: infoDatas)
-    }
-    
-    // 사진 권한
-    func checkAndShowImagePicker() {
-        let status = PHPhotoLibrary.authorizationStatus()
-        switch status {
-        case .authorized:
-            print("사진 권한 허용")
-            // 권한이 허용된 경우
-            isImagePickerPresented.toggle()
-        case .restricted:
-            // 사용자가 권한 거부 또는 제한
-            print("사진권한 제한")
-            // 권한을 요청하거나, 사용자에게 설정 앱으로 이동하도록 안내할 수 있습니다.
-        case .denied:
-            print("사진 권한 거부")
-        case .notDetermined:
-            print("아직 사진 권한을 결정하지 않음")
-            // 사용자가 아직 권한을 결정하지 않음
-            PHPhotoLibrary.requestAuthorization { newStatus in
-                if newStatus == .authorized {
-                    DispatchQueue.main.async {
-                        print("사진 권한이 허용됨")
-                        self.isImagePickerPresented.toggle()
-                    }
-                }
-            }
-        @unknown default:
-            fatalError("Unhandled case")
-        }
     }
     
     // 생일 디데이 계산
@@ -321,6 +309,36 @@ class PetInfoViewModel: ObservableObject {
         } else { // 오늘이 생일인 경우
             print("오늘이 생일")
             return currentDate.convertDate()
+        }
+    }
+    
+    // 사진 권한
+    func checkAndShowImagePicker() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            print("사진 권한 허용")
+            // 권한이 허용된 경우
+            isImagePickerPresented.toggle()
+        case .restricted:
+            // 사용자가 권한 거부 또는 제한
+            print("사진권한 제한")
+            // 권한을 요청하거나, 사용자에게 설정 앱으로 이동하도록 안내할 수 있습니다.
+        case .denied:
+            print("사진 권한 거부")
+        case .notDetermined:
+            print("아직 사진 권한을 결정하지 않음")
+            // 사용자가 아직 권한을 결정하지 않음
+            PHPhotoLibrary.requestAuthorization { newStatus in
+                if newStatus == .authorized {
+                    DispatchQueue.main.async {
+                        print("사진 권한이 허용됨")
+                        self.isImagePickerPresented.toggle()
+                    }
+                }
+            }
+        @unknown default:
+            fatalError("Unhandled case")
         }
     }
     

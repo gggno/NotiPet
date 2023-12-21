@@ -58,10 +58,17 @@ class AnniversaryViewModel: ObservableObject {
         if let allData = realm.objects(PetInfo.self).first {
             print("로컬 DB에 기념일 데이터 추가")
             try! realm.write {
-                if anniDate.dayConvertDate() == "0" {
-                    allData.anniversaryDatas.append(AnniversaryData(dDay: "D-Day", content: anniContent, dueDate: anniDate))
-                } else {
-                    allData.anniversaryDatas.append(AnniversaryData(dDay: "D\(anniDate.dayConvertDate())", content: anniContent, dueDate: anniDate))
+                if anniDate.dayConvertDate() == "0" {   // 기념일이 오늘일 때
+                    allData.anniversaryDatas.append(AnniversaryData(identifier: UUID().uuidString, dDay: "D-Day", content: anniContent, dueDate: anniDate))
+                } else {                                // 기념일이 아직 오지 않을 때
+                    let addData = AnniversaryData(
+                        identifier: UUID().uuidString,
+                        dDay: "D\(anniDate.dayConvertDate())", 
+                        content: anniContent, dueDate: anniDate
+                    )
+                    allData.anniversaryDatas.append(addData)
+                    // 로컬 푸시 알림 등록
+                    NotificationHandler.shered.anniversaryNotification(identifier: addData.identifier, dateString: addData.dueDate, title: "기념일 알림", body: addData.content)
                 }
                 
             }

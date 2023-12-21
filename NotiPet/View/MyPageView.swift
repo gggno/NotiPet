@@ -75,6 +75,9 @@ struct MyPageView: View {
         .alert(isPresented: $myPageVM.showBirthdayAlert) {
             Alert(title: Text("알림"), message: Text("생일은 삭제할 수 없습니다."), dismissButton: .default(Text("확인")))
         }
+        .onAppear {
+            NotificationHandler.shered.checkRegisteredNotification()
+        }
     }
 }
 

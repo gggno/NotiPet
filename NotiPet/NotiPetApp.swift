@@ -6,6 +6,9 @@ struct NotiPetApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                .onAppear {
+                    NotificationHandler.shered.askPermisson()
+                }
         }
     }
 }

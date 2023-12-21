@@ -128,10 +128,13 @@ class MyPageViewModel: ObservableObject {
     // 기념일 삭제하기(옆으로 슬라이드 해서 삭제할 때 이용)
     func deleteRow(indexSet: IndexSet) {
         try! realm.write {
-            indexSet.forEach {
-                if self.anniversaryDatas[$0].content != "생일" {
-                    realm.delete(self.anniversaryDatas[$0])
+            for index in indexSet {
+                let deletedIdentifier = anniversaryDatas[index].identifier
+                if anniversaryDatas[index].content != "생일" {
+                    realm.delete(anniversaryDatas[index])
                     anniversaryDatas.remove(atOffsets: indexSet)
+                    // 로컬 푸시 알림 해제
+                    NotificationHandler.shered.removeRegisteredNotification(identifiers: deletedIdentifier)
                 } else {
                     showBirthdayAlert = true
                 }
@@ -163,23 +166,46 @@ class MyPageViewModel: ObservableObject {
             
             // 차이 출력
             if let daysDifference = components.day {
-                print("item.dDay: \(item.dDay), item.content: \(item.content), item.dueDate: \(item.dueDate), daysDifference: \(daysDifference)")
                 if daysDifference < 0 {         // 일반적인 디데이 계산
-                    filterDatas.append(AnniversaryData(dDay: "D\(daysDifference)", content: item.content, dueDate: item.dueDate))
+                    let copiedItem = AnniversaryData(
+                        identifier: item.identifier,
+                        dDay: "D\(daysDifference)",
+                        content: item.content,
+                        dueDate: item.dueDate
+                    )
+                    // 로컬 푸시 알림 등록
+                    NotificationHandler.shered.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
+                    
+                    filterDatas.append(copiedItem)
                     
                 } else if daysDifference == 0 { // 오늘이 디데이일 때
-                    filterDatas.append(AnniversaryData(dDay: "D-Day", content: item.content, dueDate: item.dueDate))
+                    let copiedItem = AnniversaryData(
+                        identifier: item.identifier,
+                        dDay: "D-Day",
+                        content: item.content,
+                        dueDate: item.dueDate
+                    )
+                    filterDatas.append(copiedItem)
                     
                 } else {                        // 디데이가 지났을 때
                     if item.content == "생일" {
-                        filterDatas.append(AnniversaryData(dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)))
+                        let copiedItem = AnniversaryData(
+                            identifier: item.identifier,
+                            dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate),
+                            content: "생일",
+                            dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)
+                        )
+                        // 로컬 푸시 알림 재등록
+                        NotificationHandler.shered.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
+                        
+                        filterDatas.append(copiedItem)
                         
                     } else {
                         try! realm.write {
                             realm.delete(item)
                         }
                     }
-                }   
+                }
             }
         }
         
