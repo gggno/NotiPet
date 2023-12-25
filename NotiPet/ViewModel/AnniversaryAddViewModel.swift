@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 import RealmSwift
 
-class AnniversaryViewModel: ObservableObject {
+class AnniversaryAddViewModel: ObservableObject {
     
     var subscriptions = Set<AnyCancellable>()
     

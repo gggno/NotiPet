@@ -42,74 +42,30 @@ struct PetInfoView: View {
                     ImagePicker(selectedUIImage: $petInfoVM.petProfileUIImage)
                 }
                 
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("이름")
-                        Text(petInfoVM.petNameMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                    }
-                    TextField(
-                        "",
-                        text: $petInfoVM.petName
-                    )
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .border(.black)
-                }
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("품종")
-                        Text(petInfoVM.speciesMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                    }
-                    TextField(
-                        "",
-                        text: $petInfoVM.species
-                    )
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .border(.black)
-                }
-                
+                InputTextFieldView(theme: "이름", content: $petInfoVM.petName, message: $petInfoVM.petNameMessage, lineLimit: 1)
+                InputTextFieldView(theme: "품종", content: $petInfoVM.species, message: $petInfoVM.speciesMessage, lineLimit: 1)
                 VStack(alignment: .leading, spacing: 10) {
                     Text("생년월일")
                     HStack {
+                        Spacer()
                         Button(action: {
                             isDatePickerPresented.toggle()
                         }, label: {
                             Text(petInfoVM.birthDate)
+                                .textFieldStyle(.roundedBorder)
                             Spacer()
                         })
-                        .border(.black)
+                        .textFieldStyle(.roundedBorder)
                         .sheet(isPresented: $isDatePickerPresented) {
                             DatePicker_WheelView(isDatePickerPresented: $isDatePickerPresented, birthDate: $petInfoVM.birthDate)
                         }
+                        Spacer()
                     }
+                    .frame(maxWidth: .infinity)
                 }
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("몸무게")
-                        Text(petInfoVM.weightMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                    }
-                    HStack {
-                        TextField(
-                            "",
-                            text: $petInfoVM.weight
-                        )
-                        .textInputAutocapitalization(.never)
-                        .disableAutocorrection(true)
-                        .keyboardType(.decimalPad)
-                        .border(.black)
-                        Text("kg")
-                    }
+                HStack {
+                    InputTextFieldView(theme: "몸무게(kg)", content: $petInfoVM.weight, message: $petInfoVM.weightMessage, lineLimit: 1)
                 }
-                
                 VStack(alignment: .leading) {
                     HStack {
                         Text("성별")

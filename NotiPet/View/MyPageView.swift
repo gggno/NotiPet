@@ -54,7 +54,7 @@ struct MyPageView: View {
                         isAnniViewPresented.toggle()
                     }
                     .fullScreenCover(isPresented: $isAnniViewPresented) {
-                        AnniversaryView(isAnniViewPresented: $isAnniViewPresented)
+                        AnniversaryAddView(isAnniViewPresented: $isAnniViewPresented)
                     }
             }
             .listRowSeparator(.hidden)

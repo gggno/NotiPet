@@ -1,28 +1,14 @@
 import SwiftUI
 
-struct AnniversaryView: View {
+struct AnniversaryAddView: View {
     @Binding var isAnniViewPresented: Bool
-    @StateObject var anniVM = AnniversaryViewModel()
+    @StateObject var anniVM = AnniversaryAddViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("내용")
-                        Text(anniVM.anniContentMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                    }
-                    TextField(
-                        "",
-                        text: $anniVM.anniContent
-                    )
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .border(.black)
-                }
-                
+                InputTextFieldView(theme: "내용", content: $anniVM.anniContent, message: $anniVM.anniContentMessage, lineLimit: 2)
+
                 Spacer()
                     .frame(height: 30)
                 
