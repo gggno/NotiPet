@@ -12,6 +12,7 @@
 		66231F0A2B36CC570032B209 /* NotiAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F092B36CC570032B209 /* NotiAddView.swift */; };
 		66231F0C2B36CD750032B209 /* NotiAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0B2B36CD750032B209 /* NotiAddViewModel.swift */; };
 		66231F0E2B39C9570032B209 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0D2B39C9570032B209 /* InputTextFieldView.swift */; };
+		66231F102B39E5930032B209 /* DatePicker_Graphical2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0F2B39E5930032B209 /* DatePicker_Graphical2.swift */; };
 		662BBBD82B230ADE000A0F53 /* DatePicker_Graphical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662BBBD72B230ADE000A0F53 /* DatePicker_Graphical.swift */; };
 		662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8332B035A3F00059D90 /* OnboardingTabView.swift */; };
 		662CC8362B035B5B00059D90 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8352B035B5B00059D90 /* MainView.swift */; };
@@ -25,6 +26,7 @@
 		6633C5A62B05FDDB0018DEB0 /* PetInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6633C5A52B05FDDB0018DEB0 /* PetInfoViewModel.swift */; };
 		6655F2DD2B0B3C1800C09D9E /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6655F2DC2B0B3C1800C09D9E /* PetInfo.swift */; };
 		6655F2E12B0B4A6600C09D9E /* DatePicker_WheelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */; };
+		668A79142B3B003D00FE2C1C /* RepeatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668A79132B3B003D00FE2C1C /* RepeatListView.swift */; };
 		66AB166E2B07580B00578A9E /* UIApp + keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */; };
 		66B1EFB12B2B43EC002B733C /* AnniversaryAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B1EFB02B2B43EC002B733C /* AnniversaryAddViewModel.swift */; };
 		66BB25AA2B1877FB008AACE6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BB25A92B1877FB008AACE6 /* ImagePicker.swift */; };
@@ -46,6 +48,7 @@
 		66231F092B36CC570032B209 /* NotiAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiAddView.swift; sourceTree = "<group>"; };
 		66231F0B2B36CD750032B209 /* NotiAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiAddViewModel.swift; sourceTree = "<group>"; };
 		66231F0D2B39C9570032B209 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
+		66231F0F2B39E5930032B209 /* DatePicker_Graphical2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_Graphical2.swift; sourceTree = "<group>"; };
 		662BBBD72B230ADE000A0F53 /* DatePicker_Graphical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_Graphical.swift; sourceTree = "<group>"; };
 		662CC8332B035A3F00059D90 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
 		662CC8352B035B5B00059D90 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		6633C5A52B05FDDB0018DEB0 /* PetInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoViewModel.swift; sourceTree = "<group>"; };
 		6655F2DC2B0B3C1800C09D9E /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
 		6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_WheelView.swift; sourceTree = "<group>"; };
+		668A79132B3B003D00FE2C1C /* RepeatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatListView.swift; sourceTree = "<group>"; };
 		66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApp + keyboard.swift"; sourceTree = "<group>"; };
 		66B1EFB02B2B43EC002B733C /* AnniversaryAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnniversaryAddViewModel.swift; sourceTree = "<group>"; };
 		66BB25A92B1877FB008AACE6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -136,8 +140,10 @@
 			children = (
 				6655F2E02B0B4A6600C09D9E /* DatePicker_WheelView.swift */,
 				662BBBD72B230ADE000A0F53 /* DatePicker_Graphical.swift */,
+				66231F0F2B39E5930032B209 /* DatePicker_Graphical2.swift */,
 				66BB25A92B1877FB008AACE6 /* ImagePicker.swift */,
 				66231F0D2B39C9570032B209 /* InputTextFieldView.swift */,
+				668A79132B3B003D00FE2C1C /* RepeatListView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -281,7 +287,9 @@
 			files = (
 				66231F0C2B36CD750032B209 /* NotiAddViewModel.swift in Sources */,
 				660B75832B14797E00161AF0 /* Date + convert.swift in Sources */,
+				66231F102B39E5930032B209 /* DatePicker_Graphical2.swift in Sources */,
 				66D1A9312B3417C500B95710 /* NotificationHandler.swift in Sources */,
+				668A79142B3B003D00FE2C1C /* RepeatListView.swift in Sources */,
 				662CC83F2B03BE5100059D90 /* PetInfoView.swift in Sources */,
 				6655F2E12B0B4A6600C09D9E /* DatePicker_WheelView.swift in Sources */,
 				662BBBD82B230ADE000A0F53 /* DatePicker_Graphical.swift in Sources */,
