@@ -50,7 +50,6 @@ class AnniversaryAddViewModel: ObservableObject {
         print("AnniversaryViewModel - anniInfoSave()")
         
         if anniContent == "생일" {
-            
             showBirthdayAlert.toggle()
             return
         }

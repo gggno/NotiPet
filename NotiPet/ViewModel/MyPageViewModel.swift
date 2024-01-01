@@ -6,7 +6,7 @@ class MyPageViewModel: ObservableObject {
     
     var subscriptions = Set<AnyCancellable>()
     
-    @Published var petProfileUIImage: UIImage = UIImage(systemName: "pawprint.circle.fill")!
+    @Published var petProfileUIImage: UIImage?
     @Published var petName: String = ""
     @Published var species: String = ""
     @Published var birthDate: String = Date().convertDate()
@@ -75,14 +75,18 @@ class MyPageViewModel: ObservableObject {
     @objc func recievedDatas(_ notification: NSNotification) {
         print("MyPageViewModel - recievedDatas() called")
         if let userInfo = notification.userInfo,
-           let petProfileImage = userInfo["petProfileUIImage"] as? UIImage,
            let petName = userInfo["petName"] as? String,
            let species = userInfo["species"] as? String,
            let birthDate = userInfo["birthDate"] as? String,
            let weight = userInfo["weight"] as? String,
            let sex = userInfo["sex"] as? String,
            let anniversaryDatas = userInfo["anniversaryDatas"] as? [AnniversaryData] {
-            self.petProfileUIImage = petProfileImage
+
+            if let petProfileImage = userInfo["petProfileUIImage"] as? UIImage {
+                self.petProfileUIImage = petProfileImage
+            } else {
+                self.petProfileUIImage = nil
+            }
             self.petName = petName
             self.species = species
             self.birthDate = birthDate

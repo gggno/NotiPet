@@ -9,12 +9,22 @@ struct MyPageView: View {
         List {
             VStack {
                 HStack {
-                    Image(uiImage: myPageVM.petProfileUIImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill )
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                        .frame(width: 100, height: 100)
+                    if let image = myPageVM.petProfileUIImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill )
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                            .frame(width: 100, height: 100)
+                    } else {
+                        Circle()
+                            .fill()
+                            .overlay(
+                                Text("이미지 추가")
+                                    .foregroundColor(.blue)
+                            )
+                            .frame(width: 100, height: 100)
+                    }
                     VStack(alignment: .leading) {
                         HStack {
                             Image(uiImage: UIImage(named: myPageVM.sex == "남아" ? "Male" : "Female")!)

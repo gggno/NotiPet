@@ -23,7 +23,7 @@ struct NotiAddView: View {
                         .textFieldStyle(.roundedBorder)
                     }
                 }
-                
+            
                 Section {
                     DatePicker_Graphical2(notiDate: $notiVM.notiDate)
                     NavigationLink(destination: RepeatListView(repeatType: $notiVM.notiRepeatType)) {
@@ -33,40 +33,50 @@ struct NotiAddView: View {
                             Text(notiVM.notiRepeatType.displayName)
                         }
                     }
+                    .padding(.bottom, 8)
+                    if notiVM.daysState {
+                        DaysButtonView(selectedDays: $notiVM.selectedDays)
+                        .listRowSeparator(.hidden)
+                    }
                 }
                 
-//                Section {
-//                    if notiVM.notiImage == UIImage(systemName: "photo")! {
-//                        
-//                    } else {
-//                        Image(uiImage: notiVM.notiImage)
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 600, height: 300)
-//                            .onTapGesture {
-//                                notiVM.isImageChoicePresented.toggle()
-//                            }
-//                            .confirmationDialog(
-//                                "알림 이미지 설정",
-//                                isPresented: $notiVM.isImageChoicePresented,
-//                                actions: {
-//                                    Button(action: {
-//                                        notiVM.checkAndShowImagePicker()
-//                                    }, label: {
-//                                        Text("사진 선택")
-//                                    })
-//                                    
-//                                    Button(action: {
-//                                        notiVM.notiImage = UIImage(systemName: "photo")!
-//                                    }, label: {
-//                                        Text("사진 삭제")
-//                                    })
-//                                })
-//                            .sheet(isPresented: $notiVM.isImagePickerPresented) {
-//                                ImagePicker(selectedUIImage: $notiVM.notiImage)
-//                            }
-//                    }
-//                }
+                Section {
+                    ZStack {
+                        Text("이미지 추가")
+                            .foregroundStyle(.blue)
+                            .zIndex(0)
+                        
+                        if let image = notiVM.notiUIImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .zIndex(1)
+                        }
+                    }
+                    .frame(width: 600, height: 300)
+                    .onTapGesture {
+                        notiVM.isImageChoicePresented.toggle()
+                    }
+                    .confirmationDialog(
+                        "알림 이미지 설정",
+                        isPresented: $notiVM.isImageChoicePresented,
+                        actions: {
+                            Button(action: {
+                                notiVM.checkAndShowImagePicker()
+                            }, label: {
+                                Text("사진 선택")
+                            })
+                            
+                            Button(action: {
+                                notiVM.notiUIImage = nil
+                            }, label: {
+                                Text("사진 삭제")
+                            })
+                        })
+                    .sheet(isPresented: $notiVM.isImagePickerPresented) {
+                        ImagePicker(selectedUIImage: $notiVM.notiUIImage)
+                    }
+                }
                 
             }
             .navigationTitle("알림 추가")
@@ -83,7 +93,8 @@ struct NotiAddView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        
+                        notiVM.sendNotiData()
+                        isNotiAddPresented.toggle()
                     }, label: {
                         Text("완료")
                     })

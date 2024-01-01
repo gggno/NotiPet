@@ -7,7 +7,7 @@ class PetInfoViewModel: ObservableObject {
     
     var subscriptions = Set<AnyCancellable>()
     
-    @Published var petProfileUIImage: UIImage = UIImage(systemName: "pawprint.circle.fill")!
+    @Published var petProfileUIImage: UIImage?
     @Published var petName: String = ""
     @Published var species: String = ""
     @Published var birthDate: String = Date().convertDate()
@@ -23,6 +23,7 @@ class PetInfoViewModel: ObservableObject {
     @Published var isValidation: Bool = false
     
     @Published var isImagePickerPresented: Bool = false
+    @Published var isImageChoicePresented: Bool = false
     
     var validPetNamePublisher: AnyPublisher<Bool, Never> {
         $petName
@@ -152,7 +153,7 @@ class PetInfoViewModel: ObservableObject {
         print("PetInfoViewModel - infoSave() called")
         
         if let data = realm.objects(PetInfo.self).first {   // 갱신
-            print("로컬 DB 갱신")
+            print("기념일 데이터 로컬 DB 갱신")
             try! realm.write {
                 if data.birthDate != birthDate {    // 생일이 변경되었으면
                     let filterDatas = data.anniversaryDatas
@@ -172,7 +173,7 @@ class PetInfoViewModel: ObservableObject {
                     )
                 }
                 
-                data.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
+                data.petProfileImageData = petProfileUIImage?.jpegData(compressionQuality: 1)
                 data.petName = petName
                 data.species = species
                 data.birthDate = birthDate
@@ -180,9 +181,9 @@ class PetInfoViewModel: ObservableObject {
                 data.sex = sex
             }
         } else {                                            // 저장
-            print("로컬 DB 최초 저장")
+            print("기념일 데이터 로컬 DB 최초 저장")
             try! realm.write {
-                petInfo.petProfileImageData = petProfileUIImage.jpegData(compressionQuality: 1)
+                petInfo.petProfileImageData = petProfileUIImage?.jpegData(compressionQuality: 1)
                 petInfo.petName = petName
                 petInfo.species = species
                 petInfo.birthDate = birthDate
@@ -314,6 +315,7 @@ class PetInfoViewModel: ObservableObject {
     
     // 사진 권한
     func checkAndShowImagePicker() {
+        print("PetInfoViewModel - checkAndShowImagePicker() called")
         let status = PHPhotoLibrary.authorizationStatus()
         switch status {
         case .authorized:

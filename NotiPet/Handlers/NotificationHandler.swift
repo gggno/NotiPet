@@ -56,6 +56,121 @@ class NotificationHandler {
         }
     }
     
+    // 알림 등록
+    func notiNotification(identifier: String, notiContent: String, notiDate: Date, day: Int? = nil, month: Int? = nil, repeatType: RepeatType) {
+        print("NotificationHandler - notiNotification() called")
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.body = notiContent
+        content.sound = UNNotificationSound.default
+        
+        switch repeatType {
+        case .none:
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notiDate)
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everyday:
+            var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: notiDate)
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everyweak:
+            var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: notiDate)
+            if let day = day {
+                dateComponents.weekday = day
+            }
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everymonth:
+            var dateComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: notiDate)
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everythreemonths:
+            var dateComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: notiDate)
+            if let month = month {
+                dateComponents.month = month
+            }
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everysixmonths:
+            var dateComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: notiDate)
+            if let month = month {
+                dateComponents.month = month
+            }
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        case .everyYear:
+            var dateComponents = Calendar.current.dateComponents([.month, .day, .hour, .minute], from: notiDate)
+            var trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            
+            // 알림 요청 등록
+            center.add(request) { error in
+                if let error = error {
+                    print("로컬 푸시 등록 실패: \(error.localizedDescription)")
+                } else {
+                    print("로컬 푸시 등록 성공: \(request)")
+                }
+            }
+        }
+        
+        checkRegisteredNotification()
+    }
+    
     // 등록된 로컬 푸시 삭제
     func removeRegisteredNotification(identifiers: String) {
         print("NotificationHandler - removeRegisteredNotification() called")
