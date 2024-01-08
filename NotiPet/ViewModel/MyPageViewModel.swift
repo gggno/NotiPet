@@ -66,8 +66,6 @@ class MyPageViewModel: ObservableObject {
                 
                 return $0.content < $1.content
             }
-            
-            
         }
     }
     
@@ -214,7 +212,7 @@ class MyPageViewModel: ObservableObject {
         }
         
         if let data = realm.objects(PetInfo.self).first {
-            print("날짜 업데이트로 인한 로컬 DB 갱신")
+            print("날짜 업데이트로 인한 기념일 로컬 DB 갱신")
             try! realm.write {
                 data.anniversaryDatas.removeAll()
                 data.anniversaryDatas.append(objectsIn: filterDatas)

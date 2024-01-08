@@ -106,7 +106,7 @@ class NotiAddViewModel: ObservableObject {
                 default:
                     self.daysState = false
                     self.selectedDays.removeAll()
-                    self.daysString = ""
+                    self.daysString = type.displayName
                 }
             }
             .store(in: &subscriptions)
@@ -119,18 +119,21 @@ class NotiAddViewModel: ObservableObject {
         
         if let allData = realm.objects(PetInfo.self).first {
             print("로컬 DB에 알림 데이터 추가")
+            var addData = NotiData()
             
             switch notiRepeatType {
             case .everyweak:    // 매주
-                let addData = NotiData()
                 addData.content = notiContent
                 addData.memo = notiMemo
                 addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
                 addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
                 for day in repeatDays {
                     let id = UUID().uuidString
                     addData.identifier.append(id)
+                    addData.weekDays.append(day)
                     
                     NotificationHandler.shered.notiNotification(
                         identifier: id,
@@ -140,9 +143,6 @@ class NotiAddViewModel: ObservableObject {
                         repeatType: notiRepeatType)
                 }
                 
-                try! realm.write {
-                    allData.notiDatas.append(addData)
-                }
             case .everythreemonths: // 3개월마다
                 var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
                 for _ in 0..<3 {
@@ -153,11 +153,12 @@ class NotiAddViewModel: ObservableObject {
                     }
                 }
                 
-                let addData = NotiData()
                 addData.content = notiContent
                 addData.memo = notiMemo
                 addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
                 addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
                 for m in month {
                     let id = UUID().uuidString
@@ -171,9 +172,6 @@ class NotiAddViewModel: ObservableObject {
                         repeatType: notiRepeatType)
                 }
                 
-                try! realm.write {
-                    allData.notiDatas.append(addData)
-                }
             case .everysixmonths:   // 6개월마다
                 var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
                 if ((month.last ?? 1) + 6) > 12 {
@@ -182,11 +180,12 @@ class NotiAddViewModel: ObservableObject {
                     month.append(((month.last ?? 1) + 6))
                 }
                 
-                let addData = NotiData()
                 addData.content = notiContent
                 addData.memo = notiMemo
                 addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
                 addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
                 for m in month {
                     let id = UUID().uuidString
@@ -200,20 +199,14 @@ class NotiAddViewModel: ObservableObject {
                         repeatType: notiRepeatType)
                 }
                 
-                try! realm.write {
-                    allData.notiDatas.append(addData)
-                }
             default:
-                let addData = NotiData()
                 addData.identifier.append(UUID().uuidString)
                 addData.content = notiContent
                 addData.memo = notiMemo
                 addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
                 addData.daysString = daysString
-                
-                try! realm.write {
-                    allData.notiDatas.append(addData)
-                }
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
                 NotificationHandler.shered.notiNotification(
                     identifier: addData.identifier.first ?? "",
@@ -221,6 +214,13 @@ class NotiAddViewModel: ObservableObject {
                     notiDate: addData.notiDate,
                     repeatType: notiRepeatType)
             }
+            
+            try! realm.write {
+                allData.notiDatas.append(addData)
+            }
+            
+            // 추가된 알림 정보를 알림 리스트로 전달
+            NotificationCenter.default.post(name: NSNotification.Name("notiData"), object: nil, userInfo: ["notiDatas":addData])
         }
         
     }

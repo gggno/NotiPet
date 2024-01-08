@@ -34,16 +34,20 @@ class NotiData: Object {
     @Persisted var content: String
     @Persisted var memo: String
     @Persisted var notiDate: Date
+    @Persisted var weekDays: List<Int>
     @Persisted var daysString: String
+    @Persisted var repeatTypeDisplayName: String
     @Persisted var notiUIImageData: Data?
     
-    convenience init(identifier: List<String>, content: String, memo: String, notiDate: Date, daysString: String, notiUIImageData: Data? = nil) {
+    convenience init(identifier: List<String>, content: String, memo: String, notiDate: Date, weekDays: List<Int>, daysString: String, repeatTypeDisplayName: String, notiUIImageData: Data? = nil) {
         self.init()
         self.identifier = identifier
         self.content = content
         self.memo = memo
         self.notiDate = notiDate
+        self.weekDays = weekDays
         self.daysString = daysString
+        self.repeatTypeDisplayName = repeatTypeDisplayName
         self.notiUIImageData = notiUIImageData
     }
 }

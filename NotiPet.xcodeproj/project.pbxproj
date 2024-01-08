@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660046482B4C533C00F70EC3 /* Date + dateToTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660046472B4C533C00F70EC3 /* Date + dateToTime.swift */; };
 		6609F3222B1F589C0033C063 /* AnniversaryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6609F3212B1F589C0033C063 /* AnniversaryAddView.swift */; };
 		660B75832B14797E00161AF0 /* Date + convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660B75822B14797E00161AF0 /* Date + convert.swift */; };
 		66231F0A2B36CC570032B209 /* NotiAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F092B36CC570032B209 /* NotiAddView.swift */; };
 		66231F0C2B36CD750032B209 /* NotiAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0B2B36CD750032B209 /* NotiAddViewModel.swift */; };
 		66231F0E2B39C9570032B209 /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0D2B39C9570032B209 /* InputTextFieldView.swift */; };
 		66231F102B39E5930032B209 /* DatePicker_Graphical2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66231F0F2B39E5930032B209 /* DatePicker_Graphical2.swift */; };
+		6628799F2B43E7590093DD13 /* NotiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6628799E2B43E7590093DD13 /* NotiViewModel.swift */; };
+		662879A12B43EEDD0093DD13 /* NotiListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662879A02B43EEDD0093DD13 /* NotiListView.swift */; };
+		662879A32B43EEEA0093DD13 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662879A22B43EEEA0093DD13 /* NoDataView.swift */; };
 		662BBBD82B230ADE000A0F53 /* DatePicker_Graphical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662BBBD72B230ADE000A0F53 /* DatePicker_Graphical.swift */; };
 		662CC8342B035A4000059D90 /* OnboardingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8332B035A3F00059D90 /* OnboardingTabView.swift */; };
 		662CC8362B035B5B00059D90 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662CC8352B035B5B00059D90 /* MainView.swift */; };
@@ -46,12 +50,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		660046472B4C533C00F70EC3 /* Date + dateToTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + dateToTime.swift"; sourceTree = "<group>"; };
 		6609F3212B1F589C0033C063 /* AnniversaryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnniversaryAddView.swift; sourceTree = "<group>"; };
 		660B75822B14797E00161AF0 /* Date + convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + convert.swift"; sourceTree = "<group>"; };
 		66231F092B36CC570032B209 /* NotiAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiAddView.swift; sourceTree = "<group>"; };
 		66231F0B2B36CD750032B209 /* NotiAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiAddViewModel.swift; sourceTree = "<group>"; };
 		66231F0D2B39C9570032B209 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
 		66231F0F2B39E5930032B209 /* DatePicker_Graphical2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_Graphical2.swift; sourceTree = "<group>"; };
+		6628799E2B43E7590093DD13 /* NotiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiViewModel.swift; sourceTree = "<group>"; };
+		662879A02B43EEDD0093DD13 /* NotiListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiListView.swift; sourceTree = "<group>"; };
+		662879A22B43EEEA0093DD13 /* NoDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataView.swift; sourceTree = "<group>"; };
 		662BBBD72B230ADE000A0F53 /* DatePicker_Graphical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker_Graphical.swift; sourceTree = "<group>"; };
 		662CC8332B035A3F00059D90 /* OnboardingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTabView.swift; sourceTree = "<group>"; };
 		662CC8352B035B5B00059D90 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -137,6 +145,7 @@
 				66E5B7152B1E160800AAAD8B /* MyPageViewModel.swift */,
 				66B1EFB02B2B43EC002B733C /* AnniversaryAddViewModel.swift */,
 				66231F0B2B36CD750032B209 /* NotiAddViewModel.swift */,
+				6628799E2B43E7590093DD13 /* NotiViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -151,6 +160,8 @@
 				66231F0D2B39C9570032B209 /* InputTextFieldView.swift */,
 				668A79132B3B003D00FE2C1C /* RepeatListView.swift */,
 				66EC0FB72B3D5AC7007994F7 /* DaysButtonView.swift */,
+				662879A02B43EEDD0093DD13 /* NotiListView.swift */,
+				662879A22B43EEEA0093DD13 /* NoDataView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -161,6 +172,7 @@
 				66AB166D2B07580B00578A9E /* UIApp + keyboard.swift */,
 				660B75822B14797E00161AF0 /* Date + convert.swift */,
 				66E5B7172B1EFB0800AAAD8B /* String + dayConvertDate.swift */,
+				660046472B4C533C00F70EC3 /* Date + dateToTime.swift */,
 			);
 			path = Extention;
 			sourceTree = "<group>";
@@ -312,6 +324,8 @@
 				6655F2E12B0B4A6600C09D9E /* DatePicker_WheelView.swift in Sources */,
 				662BBBD82B230ADE000A0F53 /* DatePicker_Graphical.swift in Sources */,
 				66BB25AA2B1877FB008AACE6 /* ImagePicker.swift in Sources */,
+				662879A32B43EEEA0093DD13 /* NoDataView.swift in Sources */,
+				662879A12B43EEDD0093DD13 /* NotiListView.swift in Sources */,
 				662CC8452B049F3A00059D90 /* MyPageView.swift in Sources */,
 				66EC0FB62B3BFF16007994F7 /* RepeatType.swift in Sources */,
 				662CC8432B049F2900059D90 /* NotiView.swift in Sources */,
@@ -323,6 +337,7 @@
 				662CC8412B049F0C00059D90 /* HomeView.swift in Sources */,
 				66E5B7182B1EFB0800AAAD8B /* String + dayConvertDate.swift in Sources */,
 				66D041F52B03518A00E2A6AF /* NotiPetApp.swift in Sources */,
+				6628799F2B43E7590093DD13 /* NotiViewModel.swift in Sources */,
 				66231F0E2B39C9570032B209 /* InputTextFieldView.swift in Sources */,
 				66EC0FBA2B3D5F70007994F7 /* Days.swift in Sources */,
 				662CC83D2B03635200059D90 /* OnboardingThirdView.swift in Sources */,
@@ -334,6 +349,7 @@
 				6609F3222B1F589C0033C063 /* AnniversaryAddView.swift in Sources */,
 				6633C5A62B05FDDB0018DEB0 /* PetInfoViewModel.swift in Sources */,
 				662CC83B2B03634200059D90 /* OnboardingSecondView.swift in Sources */,
+				660046482B4C533C00F70EC3 /* Date + dateToTime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
