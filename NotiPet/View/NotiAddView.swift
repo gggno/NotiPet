@@ -2,20 +2,20 @@ import SwiftUI
 
 struct NotiAddView: View {
     @Binding var isNotiAddPresented: Bool
-    @StateObject var notiVM: NotiAddViewModel = NotiAddViewModel()
+    @StateObject var notiaddVM: NotiAddViewModel = NotiAddViewModel()
     
-    @State var selectedDate: Date = Date() // 임시
+    @Binding var modifyData: NotiData?
     
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    InputTextFieldView(theme: "내용", content: $notiVM.notiContent, message: $notiVM.notiContentMessage, lineLimit: 2)
+                    InputTextFieldView(theme: "내용", content: $notiaddVM.notiContent, message: $notiaddVM.notiContentMessage, lineLimit: 2)
                     VStack(alignment: .leading) {
                         Text("메모")
                         TextField(
                             "",
-                            text: $notiVM.notiMemo,
+                            text: $notiaddVM.notiMemo,
                             axis: .vertical
                         )
                         .lineLimit(3)
@@ -23,19 +23,19 @@ struct NotiAddView: View {
                         .textFieldStyle(.roundedBorder)
                     }
                 }
-            
+                
                 Section {
-                    DatePicker_Graphical2(notiDate: $notiVM.notiDate)
-                    NavigationLink(destination: RepeatListView(repeatType: $notiVM.notiRepeatType)) {
+                    DatePicker_Graphical2(notiDate: $notiaddVM.notiDate)
+                    NavigationLink(destination: RepeatListView(repeatType: $notiaddVM.notiRepeatType)) {
                         HStack {
                             Text("반복")
                             Spacer()
-                            Text(notiVM.notiRepeatType.displayName)
+                            Text(notiaddVM.notiRepeatType.displayName)
                         }
                     }
                     .padding(.bottom, 8)
-                    if notiVM.daysState {
-                        DaysButtonView(selectedDays: $notiVM.selectedDays)
+                    if notiaddVM.daysState {
+                        DaysButtonView(selectedDays: $notiaddVM.selectedDays)
                         .listRowSeparator(.hidden)
                     }
                 }
@@ -46,7 +46,7 @@ struct NotiAddView: View {
                             .foregroundStyle(.blue)
                             .zIndex(0)
                         
-                        if let image = notiVM.notiUIImage {
+                        if let image = notiaddVM.notiUIImage {
                             Image(uiImage: image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -55,31 +55,30 @@ struct NotiAddView: View {
                     }
                     .frame(width: 600, height: 300)
                     .onTapGesture {
-                        notiVM.isImageChoicePresented.toggle()
+                        notiaddVM.isImageChoicePresented.toggle()
                     }
                     .confirmationDialog(
                         "알림 이미지 설정",
-                        isPresented: $notiVM.isImageChoicePresented,
+                        isPresented: $notiaddVM.isImageChoicePresented,
                         actions: {
                             Button(action: {
-                                notiVM.checkAndShowImagePicker()
+                                notiaddVM.checkAndShowImagePicker()
                             }, label: {
                                 Text("사진 선택")
                             })
                             
                             Button(action: {
-                                notiVM.notiUIImage = nil
+                                notiaddVM.notiUIImage = nil
                             }, label: {
                                 Text("사진 삭제")
                             })
                         })
-                    .sheet(isPresented: $notiVM.isImagePickerPresented) {
-                        ImagePicker(selectedUIImage: $notiVM.notiUIImage)
+                    .sheet(isPresented: $notiaddVM.isImagePickerPresented) {
+                        ImagePicker(selectedUIImage: $notiaddVM.notiUIImage)
                     }
                 }
-                
             }
-            .navigationTitle("알림 추가")
+            .navigationTitle(modifyData == nil ? "알림 추가" : "알림 수정")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -93,20 +92,34 @@ struct NotiAddView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        notiVM.sendNotiData()
+                        if modifyData == nil {          // 알림 추가
+                            notiaddVM.sendNotiData()
+                        } else if modifyData != nil {   // 알림 수정
+                            notiaddVM.modifyNotiData()
+                        }
                         isNotiAddPresented.toggle()
                     }, label: {
                         Text("완료")
                     })
-                    .disabled(!notiVM.isValidation)
+                    .disabled(!notiaddVM.isValidation)
                 }
             }
             .listStyle(.insetGrouped)
             .onAppear(perform : UIApplication.shared.hideKeyboard)
+            .onAppear { // 알림 수정할 때 들어오는 데이터
+                if let modifyData = modifyData {
+                    notiaddVM.modifyIdentifer = Array(modifyData.identifier)
+                    notiaddVM.notiContent = modifyData.content
+                    notiaddVM.notiMemo = modifyData.memo
+                    notiaddVM.notiDate = modifyData.notiDate
+                    notiaddVM.selectedDays = notiaddVM.getDays(weekDays: Array(modifyData.weekDays))
+                    notiaddVM.daysString = modifyData.daysString
+                    notiaddVM.notiRepeatType = notiaddVM.getRepeatType(displayName: modifyData.repeatTypeDisplayName)
+                    if let imageData = modifyData.notiUIImageData {
+                        notiaddVM.notiUIImage = UIImage(data: imageData)
+                    }
+                }
+            }
         }
     }
 }
-
-//#Preview {
-//    NotiAddView()
-//}

@@ -172,9 +172,9 @@ class NotificationHandler {
     }
     
     // 등록된 로컬 푸시 삭제
-    func removeRegisteredNotification(identifiers: String) {
+    func removeRegisteredNotification(identifiers: [String]) {
         print("NotificationHandler - removeRegisteredNotification() called")
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifiers])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
     }
     
     // 등록된 로컬 푸시 목록 보기

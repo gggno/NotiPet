@@ -22,6 +22,8 @@ class NotiViewModel: ObservableObject {
         getNotiInfoFromDB()
         
         NotificationCenter.default.addObserver(self, selector: #selector(recievedNotiData(_:)), name: NSNotification.Name("notiData"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(modifyDeleteNotiData(_:)), name: NSNotification.Name("modifyDataIdentifer"), object: nil)
     }
     
     func getNotiInfoFromDB() {
@@ -56,8 +58,8 @@ class NotiViewModel: ObservableObject {
                         repeatTypeDisplayName: item.repeatTypeDisplayName,
                         notiUIImageData: item.notiUIImageData
                     )
-                        
-
+                    
+                    
                     filterDatas.append(addData)
                     
                 } else {
@@ -382,6 +384,7 @@ class NotiViewModel: ObservableObject {
             }
         }
         print("filterDatas: \(filterDatas)")
+        
         // 로컬 디비에 notiDatas를 필터 데이터로 갱신
         if let data = realm.objects(PetInfo.self).first {
             try! realm.write {
@@ -392,6 +395,7 @@ class NotiViewModel: ObservableObject {
         return filterDatas
     }
     
+    // 추가한 알림 데이터 받기
     @objc func recievedNotiData(_ notification: NSNotification) {
         print("NotiViewModel - recievedNotiData() called")
         
@@ -401,6 +405,38 @@ class NotiViewModel: ObservableObject {
             notiDatas = filteredDatas(notiDatas: notiDatas).sorted { $0.notiDate < $1.notiDate }
             print(notiData)
             print(notiDatas)
+        }
+    }
+    
+    // 기존 알림 데이터 수정하기
+    @objc func modifyDeleteNotiData(_ notification: NSNotification) {
+        print("NotiViewModel - modifyDeleteNotiData() called")
+        
+        if let userInfo = notification.userInfo,
+           let identiferFirst = userInfo["identiferFirst"] as? String,
+           let modifyData = userInfo["modifyData"] as? NotiData {
+            print("modifyData: \(modifyData)")
+            print("notiDatas: \(notiDatas)")
+            if let modifyIndex = notiDatas.firstIndex(where: { $0.identifier.first == identiferFirst }) {
+                notiDatas[modifyIndex] = modifyData
+            }
+
+        }
+    }
+    
+    // 알림 삭제하기
+    func deleteNotiData(notiData: NotiData) {
+        print("NotiViewModel - deleteNotiData() called")
+       
+        if let deleteIndex = notiDatas.firstIndex(of: notiData),
+           let data = realm.objects(PetInfo.self).first {
+            try! realm.write {
+                data.notiDatas.remove(at: deleteIndex)
+            }
+                
+            NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(notiData.identifier))
+            
+            notiDatas.remove(at: deleteIndex)
         }
     }
     

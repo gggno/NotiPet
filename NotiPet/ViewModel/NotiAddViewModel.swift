@@ -7,6 +7,8 @@ class NotiAddViewModel: ObservableObject {
     
     var subscriptions = Set<AnyCancellable>()
     
+    @Published var modifyIdentifer: [String] = []
+    
     @Published var notiContent: String = ""
     @Published var notiContentMessage: String = ""
     @Published var notiMemo: String = ""
@@ -57,7 +59,6 @@ class NotiAddViewModel: ObservableObject {
     
     init() {
         print("NotiAddViewModel - init() called")
-        NotificationHandler.shered.checkRegisteredNotification()
         
         validnotiContentPublisher
             .receive(on: RunLoop.main)
@@ -110,7 +111,6 @@ class NotiAddViewModel: ObservableObject {
                 }
             }
             .store(in: &subscriptions)
-        
     }
     
     // 알림 정보 저장
@@ -118,6 +118,7 @@ class NotiAddViewModel: ObservableObject {
         print("NotiAddViewModel - sendNotiData() called")
         
         if let allData = realm.objects(PetInfo.self).first {
+            
             print("로컬 DB에 알림 데이터 추가")
             var addData = NotiData()
             
@@ -144,6 +145,7 @@ class NotiAddViewModel: ObservableObject {
                 }
                 
             case .everythreemonths: // 3개월마다
+                
                 var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
                 for _ in 0..<3 {
                     if ((month.last ?? 1) + 3) > 12 {
@@ -222,7 +224,151 @@ class NotiAddViewModel: ObservableObject {
             // 추가된 알림 정보를 알림 리스트로 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object: nil, userInfo: ["notiDatas":addData])
         }
+    }
+    
+    // 알림 정보 수정
+    func modifyNotiData() {
+        print("NotiAddViewModel - modifyNotiData() called")
         
+        if let allData = realm.objects(PetInfo.self).first,
+           let modifyIndex = allData.notiDatas.firstIndex(where: {$0.identifier.first == modifyIdentifer.first}) {
+            
+            // 기존에 등록된 알림 삭제
+            NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(allData.notiDatas[modifyIndex].identifier))
+            
+            var addData = NotiData()
+            
+            // 반복 타입에 따라 데이터 넣기
+            switch notiRepeatType {
+            case .everyweak:    // 매주
+                addData.content = notiContent
+                addData.memo = notiMemo
+                addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
+                addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
+                
+                for day in repeatDays {
+                    let id = UUID().uuidString
+                    addData.identifier.append(id)
+                    addData.weekDays.append(day)
+                    
+                    NotificationHandler.shered.notiNotification(
+                        identifier: id,
+                        notiContent: addData.content,
+                        notiDate: addData.notiDate,
+                        day: day,
+                        repeatType: notiRepeatType)
+                }
+                
+            case .everythreemonths: // 3개월마다
+                
+                var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
+                for _ in 0..<3 {
+                    if ((month.last ?? 1) + 3) > 12 {
+                        month.append(((month.last ?? 1) + 3) % 12)
+                    } else {
+                        month.append(((month.last ?? 1) + 3))
+                    }
+                }
+                
+                addData.content = notiContent
+                addData.memo = notiMemo
+                addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
+                addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
+                
+                for m in month {
+                    let id = UUID().uuidString
+                    addData.identifier.append(id)
+                    
+                    NotificationHandler.shered.notiNotification(
+                        identifier: id,
+                        notiContent: addData.content,
+                        notiDate: addData.notiDate,
+                        month: m,
+                        repeatType: notiRepeatType)
+                }
+                
+            case .everysixmonths:   // 6개월마다
+                var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
+                if ((month.last ?? 1) + 6) > 12 {
+                    month.append(((month.last ?? 1) + 6) % 12)
+                } else {
+                    month.append(((month.last ?? 1) + 6))
+                }
+                
+                addData.content = notiContent
+                addData.memo = notiMemo
+                addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
+                addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
+                
+                for m in month {
+                    let id = UUID().uuidString
+                    addData.identifier.append(id)
+                    
+                    NotificationHandler.shered.notiNotification(
+                        identifier: id,
+                        notiContent: addData.content,
+                        notiDate: addData.notiDate,
+                        month: m,
+                        repeatType: notiRepeatType)
+                }
+                
+            default:
+                addData.identifier.append(UUID().uuidString)
+                addData.content = notiContent
+                addData.memo = notiMemo
+                addData.notiDate = notiDate
+                addData.repeatTypeDisplayName = notiRepeatType.displayName
+                addData.daysString = daysString
+                addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
+                
+                NotificationHandler.shered.notiNotification(
+                    identifier: addData.identifier.first ?? "",
+                    notiContent: addData.content,
+                    notiDate: addData.notiDate,
+                    repeatType: notiRepeatType)
+            }
+            
+            // 수정된 알림 데이터 전달
+            NotificationCenter.default.post(name: NSNotification.Name("modifyDataIdentifer"),
+                                            object: nil,
+                                            userInfo: [
+                                                "identiferFirst": allData.notiDatas[modifyIndex].identifier.first,
+                                                "modifyData": addData])
+            
+            // 로컬 DB 알림 데이터 수정
+            try! realm.write {
+                print("allData.notiDatas before: \(allData.notiDatas)")
+                allData.notiDatas[modifyIndex] = addData
+                print("allData.notiDatas after: \(allData.notiDatas)")
+            }
+        }
+    }
+    
+    // 수정할때 매주 요일 가져오기
+    func getDays(weekDays: [Int]) -> Set<Days> {
+        print("NotiAddViewModel - getDays() called")
+        var setDays: Set<Days> = []
+        
+        for day in weekDays {
+            if let displayNum = Days.allCases.first(where: {$0.displayNum == day}) {
+                setDays.insert(displayNum)
+            }
+        }
+
+        return setDays
+    }
+    
+    // 수정할때 타입 가져오기
+    func getRepeatType(displayName: String) -> RepeatType {
+        print("NotiAddViewModel - getRepeatType() called")
+        guard let selectedType = RepeatType.allCases.first(where: { $0.displayName == displayName }) else { return RepeatType.none }
+        return selectedType
     }
     
     // 사진 권한

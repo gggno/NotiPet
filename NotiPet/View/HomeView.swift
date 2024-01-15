@@ -2,13 +2,13 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var isNotiAddPresented: Bool = false
+    @State var tempModifyData: NotiData? = nil
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             List {
                 ForEach(0...20, id: \.self) { num in
                     Text("\(num)")
-                    
                 }
             }
             Button(action: {
@@ -25,7 +25,7 @@ struct HomeView: View {
             .clipShape(Circle())
             .padding()
             .fullScreenCover(isPresented: $isNotiAddPresented, content: {
-                NotiAddView(isNotiAddPresented: $isNotiAddPresented)
+                NotiAddView(isNotiAddPresented: $isNotiAddPresented, modifyData: $tempModifyData)
             })
         }
     }

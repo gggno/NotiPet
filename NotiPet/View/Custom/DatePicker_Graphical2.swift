@@ -3,14 +3,12 @@ import SwiftUI
 struct DatePicker_Graphical2: View {
     @State var selectedDate: Date = Date()
     @Binding var notiDate: Date
-   
     
     var currentDate = Date()
     
     var body: some View {
         DatePicker("",
                    selection: $selectedDate,
-                   in: currentDate...,
                    displayedComponents: [.date, .hourAndMinute]
         )
         .datePickerStyle(.graphical)
@@ -20,7 +18,7 @@ struct DatePicker_Graphical2: View {
             notiDate = selectedDate
         }
         .onAppear {
-            notiDate = selectedDate
+            selectedDate = notiDate
         }
     }
 }

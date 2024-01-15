@@ -136,7 +136,7 @@ class MyPageViewModel: ObservableObject {
                     realm.delete(anniversaryDatas[index])
                     anniversaryDatas.remove(atOffsets: indexSet)
                     // 로컬 푸시 알림 해제
-                    NotificationHandler.shered.removeRegisteredNotification(identifiers: deletedIdentifier)
+                    NotificationHandler.shered.removeRegisteredNotification(identifiers: [deletedIdentifier])
                 } else {
                     showBirthdayAlert = true
                 }
