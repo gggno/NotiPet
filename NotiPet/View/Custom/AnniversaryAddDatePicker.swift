@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DatePicker_Graphical: View {
+struct AnniversaryAddDatePicker: View {
     @State var selectedDate: Date = Date()
     @Binding var anniDate: String
     
@@ -23,7 +23,3 @@ struct DatePicker_Graphical: View {
         }
     }
 }
-
-//#Preview {
-//    DatePicker_Graphical()
-//}

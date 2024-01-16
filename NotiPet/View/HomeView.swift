@@ -1,32 +1,21 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var homeVM = HomeViewModel()
     @State private var isNotiAddPresented: Bool = false
-    @State var tempModifyData: NotiData? = nil
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             List {
+                PetProfileView(petProfileUIImage: $homeVM.petProfileUIImage, petName: $homeVM.petName, birthDate: $homeVM.birthDate, sex: $homeVM.sex)
+                
                 ForEach(0...20, id: \.self) { num in
                     Text("\(num)")
                 }
             }
-            Button(action: {
-                isNotiAddPresented.toggle()
-            }, label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 28, height: 28)
-                    .padding()
-            })
-            .background(Color(.systemBlue))
-            .foregroundColor(.white)
-            .clipShape(Circle())
-            .padding()
-            .fullScreenCover(isPresented: $isNotiAddPresented, content: {
-                NotiAddView(isNotiAddPresented: $isNotiAddPresented, modifyData: $tempModifyData)
-            })
+            .listStyle(.plain)
+            
+            FloatingButton(isNotiAddPresented: $isNotiAddPresented)
         }
     }
 }

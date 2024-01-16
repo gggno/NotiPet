@@ -13,7 +13,7 @@ struct AnniversaryAddView: View {
                     }
                     
                     Section {
-                        DatePicker_Graphical(anniDate: $anniVM.anniDate)
+                        AnniversaryAddDatePicker(anniDate: $anniVM.anniDate)
                             .frame(maxWidth: .infinity)
                     }
                 }

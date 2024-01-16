@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DatePicker_Graphical2: View {
+struct NotiAddDatePicker: View {
     @State var selectedDate: Date = Date()
     @Binding var notiDate: Date
     
@@ -21,9 +21,4 @@ struct DatePicker_Graphical2: View {
             selectedDate = notiDate
         }
     }
-}
-
-#Preview {
-    DatePicker_Graphical2(notiDate: .constant(Date()))
-    
 }

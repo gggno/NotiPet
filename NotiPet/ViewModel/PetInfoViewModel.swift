@@ -301,11 +301,7 @@ class PetInfoViewModel: ObservableObject {
             
         } else if currentDate < thisYearBirthDate { // 올해 생일이 안 지난 경우
             print("올해 생일 안 지남")
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.year, .month ,.day], from: currentDate, to: thisYearBirthDate)
-            let dDay = components.day!
-            
-            return Date(timeIntervalSinceNow: TimeInterval(dDay*86400)).convertDate()
+            return thisYearBirthDate.convertDate()
             
         } else { // 오늘이 생일인 경우
             print("오늘이 생일")

@@ -25,7 +25,7 @@ struct NotiAddView: View {
                 }
                 
                 Section {
-                    DatePicker_Graphical2(notiDate: $notiaddVM.notiDate)
+                    NotiAddDatePicker(notiDate: $notiaddVM.notiDate)
                     NavigationLink(destination: RepeatListView(repeatType: $notiaddVM.notiRepeatType)) {
                         HStack {
                             Text("반복")
