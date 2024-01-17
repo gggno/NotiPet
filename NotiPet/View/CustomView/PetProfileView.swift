@@ -31,13 +31,11 @@ struct PetProfileView: View {
                         Text(petName)
                             .lineLimit(1)
                     }
-                    Text("함께한지 \(Int(birthDate.dayConvertDate())! + 1)일")
+                    Text("함께한지 \(Int(birthDate.dayConvertDate()) ?? 0 + 1)일")
                         .lineLimit(1)
                 }
             }
         }
         .listRowSeparator(.hidden)
-        Spacer()
-            .frame(height: 150)
     }
 }

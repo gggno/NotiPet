@@ -7,11 +7,12 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             List {
-                PetProfileView(petProfileUIImage: $homeVM.petProfileUIImage, petName: $homeVM.petName, birthDate: $homeVM.birthDate, sex: $homeVM.sex)
-                
-                ForEach(0...20, id: \.self) { num in
-                    Text("\(num)")
+                Group {
+                    PetProfileView(petProfileUIImage: $homeVM.petProfileUIImage, petName: $homeVM.petName, birthDate: $homeVM.birthDate, sex: $homeVM.sex)
+                    HomeDatePicker(selectedDate: $homeVM.selectedDate)
+                    SelectedNotiView(selectedDate: $homeVM.selectedDate, selectedNotiDatas: $homeVM.selectedNotiDatas)
                 }
+                .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
             

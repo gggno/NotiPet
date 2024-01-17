@@ -34,6 +34,7 @@ class NotiAddViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
     
+    // 매주 반복일 때 반복되는 요일 선택
     var validEveryweekPublisher: AnyPublisher<Bool, Never> {
         $notiRepeatType.combineLatest($selectedDays)
             .map { repeatType, selectedDays in
@@ -79,8 +80,6 @@ class NotiAddViewModel: ObservableObject {
                     return order.firstIndex(of: day1)! < order.firstIndex(of: day2)!
                 })
                 
-                print("선택한 요일: \(sortedDays.map { $0.displayName })")
-                
                 switch sortedDays {
                 case [Days.sunday, Days.monday, Days.tuesday, Days.wednesday, Days.thursday, Days.friday, Days.saturday]:
                     self.daysString = "매일"
@@ -100,6 +99,7 @@ class NotiAddViewModel: ObservableObject {
             .store(in: &subscriptions)
         
         $notiRepeatType
+            .print("$notiRepeatType:")
             .sink { type in
                 switch type {
                 case .everyweak:
@@ -145,7 +145,6 @@ class NotiAddViewModel: ObservableObject {
                 }
                 
             case .everythreemonths: // 3개월마다
-                
                 var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
                 for _ in 0..<3 {
                     if ((month.last ?? 1) + 3) > 12 {
@@ -262,7 +261,6 @@ class NotiAddViewModel: ObservableObject {
                 }
                 
             case .everythreemonths: // 3개월마다
-                
                 var month: [Int] = [Calendar.current.component(.month, from: notiDate)]
                 for _ in 0..<3 {
                     if ((month.last ?? 1) + 3) > 12 {

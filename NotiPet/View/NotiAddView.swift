@@ -6,6 +6,8 @@ struct NotiAddView: View {
     
     @Binding var modifyData: NotiData?
     
+    @State var didAppear: Bool = true
+    
     var body: some View {
         NavigationStack {
             List {
@@ -107,6 +109,9 @@ struct NotiAddView: View {
             .listStyle(.insetGrouped)
             .onAppear(perform : UIApplication.shared.hideKeyboard)
             .onAppear { // 알림 수정할 때 들어오는 데이터
+                guard didAppear else {return}
+                didAppear.toggle()
+                
                 if let modifyData = modifyData {
                     notiaddVM.modifyIdentifer = Array(modifyData.identifier)
                     notiaddVM.notiContent = modifyData.content
@@ -119,6 +124,7 @@ struct NotiAddView: View {
                         notiaddVM.notiUIImage = UIImage(data: imageData)
                     }
                 }
+                
             }
         }
     }

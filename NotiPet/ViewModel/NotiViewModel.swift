@@ -403,8 +403,6 @@ class NotiViewModel: ObservableObject {
            let notiData = userInfo["notiDatas"] as? NotiData {
             notiDatas.append(notiData)
             notiDatas = filteredDatas(notiDatas: notiDatas).sorted { $0.notiDate < $1.notiDate }
-            print(notiData)
-            print(notiDatas)
         }
     }
     
@@ -415,12 +413,11 @@ class NotiViewModel: ObservableObject {
         if let userInfo = notification.userInfo,
            let identiferFirst = userInfo["identiferFirst"] as? String,
            let modifyData = userInfo["modifyData"] as? NotiData {
-            print("modifyData: \(modifyData)")
-            print("notiDatas: \(notiDatas)")
             if let modifyIndex = notiDatas.firstIndex(where: { $0.identifier.first == identiferFirst }) {
                 notiDatas[modifyIndex] = modifyData
             }
-
+            
+            notiDatas = filteredDatas(notiDatas: notiDatas).sorted { $0.notiDate < $1.notiDate }
         }
     }
     
