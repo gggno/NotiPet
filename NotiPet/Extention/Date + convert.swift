@@ -14,6 +14,10 @@ extension Date {
         return Calendar.current.date(from: component) ?? Date()
     }
     
+    var onlyIntDay: Int {
+        return Calendar.current.dateComponents([.weekday], from: self).weekday ?? 0
+    }
+    
     // 2024.01.16(화)
     func convertDatePlusDay() -> String {
         let formatter = DateFormatter()

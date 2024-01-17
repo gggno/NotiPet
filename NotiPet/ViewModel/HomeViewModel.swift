@@ -32,35 +32,33 @@ class HomeViewModel: ObservableObject {
             .combineLatest($notiDatas)
             .sink { selectedDate, notiDatas in
                 self.selectedNotiDatas = notiDatas.filter { notiData in
+                    
                     let afterDays = selectedDate.onlyDate >= notiData.notiDate.onlyDate // 알림 날짜 이후인지
+                    let compareIntDays = Array(notiData.weekDays).contains(selectedDate.onlyIntDay) // 매주일때 해당하는 요일인지
                     
                     switch notiData.repeatTypeDisplayName {
                     case RepeatType.everyday.displayName:
-                        print("RepeatType.everyday.displayName")
                         return afterDays
                         
                     case RepeatType.everyweak.displayName:
-                        print("RepeatType.everyweak.displayName")
-                        return afterDays 
+                        return afterDays && compareIntDays
                         
                     case RepeatType.everymonth.displayName:
-                        print("RepeatType.everymonth.displayName")
+                        return afterDays && self.compareDay(firstDate: selectedDate, secondDate: notiData.notiDate)
                         
                     case RepeatType.everythreemonths.displayName:
-                        print("RepeatType.everythreemonths.displayName")
+                        return afterDays && self.compareThreeMonth(firstDate: selectedDate, secondDate: notiData.notiDate)
                         
                     case RepeatType.everysixmonths.displayName:
-                        print("RepeatType.everysixmonths.displayName")
+                        return afterDays && self.compareSixMonth(firstDate: selectedDate, secondDate: notiData.notiDate)
                         
                     case RepeatType.everyYear.displayName:
                         print("RepeatType.everyYear.displayName")
-                        
+                        return afterDays && self.compareYear(firstDate: selectedDate, secondDate: notiData.notiDate)
                     default:
                         print("RepeatType.default.displayName")
                         return notiData.notiDate.convertDate() == selectedDate.convertDate()
                     }
-                    
-                    return notiData.notiDate.convertDate() == selectedDate.convertDate()
                 }
 
             }.store(in: &subscriptions)
@@ -120,6 +118,64 @@ class HomeViewModel: ObservableObject {
         }
     }
     
+    // 매달 day(일)이 같은지 비교
+    func compareDay(firstDate: Date, secondDate: Date) -> Bool {
+        print("HomeViewModel - compareDay() called")
+        let calendar = Calendar.current
+        let components1 = calendar.dateComponents([.day], from: firstDate)
+        let components2 = calendar.dateComponents([.day], from: secondDate)
+        
+        return components1.day == components2.day
+    }
+    
+    // 3달마다 day(일)이 같은지 비교
+    func compareThreeMonth(firstDate: Date, secondDate: Date) -> Bool {
+        print("HomeViewModel - compareThreeMonth() called")
+        let calendar = Calendar.current
+        let components1 = calendar.dateComponents([.month, .day], from: firstDate)
+        let components2 = calendar.dateComponents([.month, .day], from: secondDate)
+        
+        var month: [Int] = [components2.month ?? 0]
+        for _ in 0..<3 {
+            if ((month.last ?? 1) + 3) > 12 {
+                month.append(((month.last ?? 1) + 3) % 12)
+            } else {
+                month.append(((month.last ?? 1) + 3))
+            }
+        }
+        
+        return month.contains(components1.month ?? 0) && components1.day == components2.day
+    }
+    
+    // 6달마다 day(일)이 같은지 비교
+    func compareSixMonth(firstDate: Date, secondDate: Date) -> Bool {
+        print("HomeViewModel - compareSixMonth() called")
+        let calendar = Calendar.current
+        let components1 = calendar.dateComponents([.month, .day], from: firstDate)
+        let components2 = calendar.dateComponents([.month, .day], from: secondDate)
+        
+        var month: [Int] = [components2.month ?? 0]
+        if ((month.last ?? 1) + 6) > 12 {
+            month.append(((month.last ?? 1) + 6) % 12)
+        } else {
+            month.append(((month.last ?? 1) + 6))
+        }
+        
+        return month.contains(components1.month ?? 0) && components1.day == components2.day
+    }
+    
+    // 매년마다 month(월), day(일)이 같은지 비교
+    func compareYear(firstDate: Date, secondDate: Date) -> Bool {
+        print("HomeViewModel - compareYear() called")
+        let calendar = Calendar.current
+        let components1 = calendar.dateComponents([.month, .day], from: firstDate)
+        let components2 = calendar.dateComponents([.month, .day], from: secondDate)
+        
+        return components1.month == components2.month && components1.day == components2.day
+    }
+    
+    
+    // 날짜순으로 정렬
     func filteredDatas(notiDatas: [NotiData]) -> [NotiData] {
         print("HomeViewModel - filteredDatas() called")
         var filterDatas: [NotiData] = []
@@ -151,12 +207,10 @@ class HomeViewModel: ObservableObject {
                 }
             case RepeatType.everyweak.displayName:
                 print("everyweek")
-                print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
-                print("item.weekDays: \(item.weekDays)")
                 let currentWeekday = Calendar.current.dateComponents([.weekday], from: currentDate).weekday ?? 0
                 
                 if item.notiDate < currentDate {
-                    var addData = NotiData(
+                    let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
                         memo: item.memo,
@@ -169,8 +223,6 @@ class HomeViewModel: ObservableObject {
                     
                     if let nextWeekday = item.weekDays.first(where: {$0 >= currentWeekday}) {    // 이번주에 남아있는 요일이 있을 때
                         print("이번주에 남아있는 요일이 있는 경우")
-                        print("nextWeekday: \(nextWeekday)")
-                        print(Calendar.current.date(byAdding: .weekday, value: nextWeekday-currentWeekday, to: currentDate))
                         let filterDate = Calendar.current.date(byAdding: .weekday, value: nextWeekday-currentWeekday, to: currentDate) ?? Date()
                         
                         let calendar = Calendar.current
@@ -179,13 +231,11 @@ class HomeViewModel: ObservableObject {
                         newDateComponents.year = components.year
                         newDateComponents.month = components.month
                         newDateComponents.day = components.day
-                        print(calendar.date(from: newDateComponents))
                         
                         addData.notiDate = calendar.date(from: newDateComponents) ?? Date()
                         
                     } else {    // 이번주에 남아있는 요일이 없고 다음주로 넘어가야 할때
                         print("다음주로 넘어가야 하는 경우")
-                        print(Calendar.current.date(byAdding: .weekday, value: item.weekDays[0]+1, to: currentDate))
                         let filterDate = Calendar.current.date(byAdding: .weekday, value: item.weekDays[0]+1, to: currentDate) ?? Date()
                         
                         let calendar = Calendar.current
@@ -194,7 +244,6 @@ class HomeViewModel: ObservableObject {
                         newDateComponents.year = components.year
                         newDateComponents.month = components.month
                         newDateComponents.day = components.day
-                        print(calendar.date(from: newDateComponents))
                         
                         addData.notiDate = calendar.date(from: newDateComponents) ?? Date()
                     }
@@ -202,7 +251,7 @@ class HomeViewModel: ObservableObject {
                     filterDatas.append(addData)
                 } else {
                     print("정한 날이 아직 안 왔을 때")
-                    var addData = NotiData(
+                    let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
                         memo: item.memo,
@@ -216,8 +265,6 @@ class HomeViewModel: ObservableObject {
                     
                     if let nextWeekday = item.weekDays.first(where: {$0 >= itemWeekday}) {    // 그 주에 남아있는 요일이 있을 때
                         print("이번주에 남아있는 요일이 있는 경우")
-                        print("nextWeekday: \(nextWeekday)")
-                        print(Calendar.current.date(byAdding: .weekday, value: nextWeekday-itemWeekday, to: item.notiDate))
                         let filterDate = Calendar.current.date(byAdding: .weekday, value: nextWeekday-itemWeekday, to: item.notiDate) ?? Date()
                         
                         let calendar = Calendar.current
@@ -226,13 +273,11 @@ class HomeViewModel: ObservableObject {
                         newDateComponents.year = components.year
                         newDateComponents.month = components.month
                         newDateComponents.day = components.day
-                        print(calendar.date(from: newDateComponents))
                         
                         addData.notiDate = calendar.date(from: newDateComponents) ?? Date()
                         
                     } else {    // 그 주에 남아있는 요일이 없고 다음주로 넘어가야 할때
                         print("다음주로 넘어가야 하는 경우")
-                        print(Calendar.current.date(byAdding: .weekday, value: item.weekDays[0]+1, to: item.notiDate))
                         let filterDate = Calendar.current.date(byAdding: .weekday, value: item.weekDays[0]+1, to: item.notiDate) ?? Date()
                         
                         let calendar = Calendar.current
@@ -241,7 +286,6 @@ class HomeViewModel: ObservableObject {
                         newDateComponents.year = components.year
                         newDateComponents.month = components.month
                         newDateComponents.day = components.day
-                        print(calendar.date(from: newDateComponents))
                         
                         addData.notiDate = calendar.date(from: newDateComponents) ?? Date()
                     }
@@ -257,8 +301,6 @@ class HomeViewModel: ObservableObject {
                     let itemComponent = Calendar.current.dateComponents([.year, .month, .day], from: item.notiDate)
                     let currentComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate)
                     let differMonth = Calendar.current.dateComponents([.month], from: item.notiDate, to: currentDate).month ?? 0
-                    print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
-                    print("itemDay: \(itemDay) currentDay: \(currentDay)")
                     
                     if differMonth >= 12 {   // 1년 이상이면
                         addDate = Calendar.current.date(byAdding: .year, value: differMonth/12, to: item.notiDate) ?? Date()
@@ -268,7 +310,7 @@ class HomeViewModel: ObservableObject {
                     } else { // 오늘 이후면 다음달로
                         addDate = Calendar.current.date(byAdding: .month, value: differMonth+1, to: item.notiDate) ?? Date()
                     }
-                    print(addDate)
+                    
                     let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -284,8 +326,6 @@ class HomeViewModel: ObservableObject {
                     filterDatas.append(item)
                 }
             case RepeatType.everythreemonths.displayName:
-                print("everythreemonths")
-                print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
                 var month: [Int] = [Calendar.current.component(.month, from: item.notiDate)]
                 for _ in 0..<3 {
                     if ((month.last ?? 1) + 3) > 12 {
@@ -313,7 +353,6 @@ class HomeViewModel: ObservableObject {
                     
                     if let nextMonth = month.first(where: {$0 > currentComponent.month ?? 0}) { // 현재 해(current)에 남은게 있는 경우
                         print("현재 해(current)에 남은 달이 있는 경우")
-                        print("nextMonth: \(nextMonth)")
                         
                         // month[0], [1], [2]의 달인데 해당하는 날이 아직 오지 않았을때
                         if month.contains(currentComponent.month ?? 0) && itemComponent.day ?? 0 >= currentComponent.day ?? 0 {
@@ -334,13 +373,11 @@ class HomeViewModel: ObservableObject {
                             addDate = calendar.date(byAdding: .month, value: (currentComponent.month ?? 0)-((itemComponent.month ?? 0)), to: addDate) ?? Date()
                         } else {
                             addDate = calendar.date(byAdding: .year, value: (currentComponent.year ?? 0)-(itemComponent.year ?? 0)+1, to: item.notiDate) ?? Date()
-                            print("addDate: \(addDate)")
                             var components = calendar.dateComponents(in: calendar.timeZone, from: addDate)
                             components.month = month[0]
                             addDate = calendar.date(from: components) ?? Date()
                             
                         }
-                        print(addDate)
                         
                         addData.notiDate = addDate
                     }
@@ -352,14 +389,12 @@ class HomeViewModel: ObservableObject {
                 
             case RepeatType.everysixmonths.displayName:
                 print("everysixmonths")
-                print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
                 var month: [Int] = [Calendar.current.component(.month, from: item.notiDate)]
                 if ((month.last ?? 1) + 6) > 12 {
                     month.append(((month.last ?? 1) + 6) % 12)
                 } else {
                     month.append(((month.last ?? 1) + 6))
                 }
-                print("month: \(month)")
                 if item.notiDate < currentDate {
                     let calendar = Calendar.current
                     let itemComponent = calendar.dateComponents([.year, .month, .day], from: item.notiDate)
@@ -378,7 +413,6 @@ class HomeViewModel: ObservableObject {
                     
                     if let nextMonth = month.first(where: {$0 > currentComponent.month ?? 0}) { // 현재 해(current)에 남은게 있는 경우
                         print("현재 해(current)에 남은 달이 있는 경우")
-                        print("nextMonth: \(nextMonth)")
                         
                         // month[0]의 달인데 해당하는 날이 아직 오지 않았을때
                         if month.contains(currentComponent.month ?? 0) && itemComponent.day ?? 0 >= currentComponent.day ?? 0 {
@@ -398,13 +432,11 @@ class HomeViewModel: ObservableObject {
                             addDate = calendar.date(byAdding: .month, value: (currentComponent.month ?? 0)-((itemComponent.month ?? 0)), to: addDate) ?? Date()
                         } else {
                             addDate = calendar.date(byAdding: .year, value: (currentComponent.year ?? 0)-(itemComponent.year ?? 0)+1, to: item.notiDate) ?? Date()
-                            print("addDate: \(addDate)")
                             var components = calendar.dateComponents(in: calendar.timeZone, from: addDate)
                             components.month = month[0]
                             addDate = calendar.date(from: components) ?? Date()
                             
                         }
-                        print(addDate)
                         
                         addData.notiDate = addDate
                     }
@@ -423,7 +455,7 @@ class HomeViewModel: ObservableObject {
                     let itemComponent = calendar.dateComponents([.month, .day], from: item.notiDate)
                     let currentComponent = calendar.dateComponents([.month, .day], from: currentDate)
                     let differ = calendar.dateComponents([.year], from: item.notiDate, to: currentDate)
-                    print("item.notiDate: \(item.notiDate), currentDate: \(currentDate)")
+                    
                     if itemYear < currentYear {
                         print(differ)
                         if differ.year ?? 0 > 0 {           // 1년 이상 차이 날 때
