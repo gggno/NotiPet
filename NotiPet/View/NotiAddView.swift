@@ -95,13 +95,15 @@ struct NotiAddView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         if modifyData == nil {          // 알림 추가
+                            print("알림 추가")
                             notiaddVM.sendNotiData()
                         } else if modifyData != nil {   // 알림 수정
+                            print("알림 수정")
                             notiaddVM.modifyNotiData()
                         }
                         isNotiAddPresented.toggle()
                     }, label: {
-                        Text("완료")
+                        modifyData == nil ? Text("완료") : Text("수정")
                     })
                     .disabled(!notiaddVM.isValidation)
                 }
@@ -111,7 +113,7 @@ struct NotiAddView: View {
             .onAppear { // 알림 수정할 때 들어오는 데이터
                 guard didAppear else {return}
                 didAppear.toggle()
-                
+                 
                 if let modifyData = modifyData {
                     notiaddVM.modifyIdentifer = Array(modifyData.identifier)
                     notiaddVM.notiContent = modifyData.content

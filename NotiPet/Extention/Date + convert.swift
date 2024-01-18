@@ -18,6 +18,11 @@ extension Date {
         return Calendar.current.dateComponents([.weekday], from: self).weekday ?? 0
     }
     
+    var onltTime: Date {
+        let component = Calendar.current.dateComponents([.hour, .minute], from: self)
+        return Calendar.current.date(from: component) ?? Date()
+    }
+    
     // 2024.01.16(화)
     func convertDatePlusDay() -> String {
         let formatter = DateFormatter()

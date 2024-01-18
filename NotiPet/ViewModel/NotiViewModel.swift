@@ -30,12 +30,12 @@ class NotiViewModel: ObservableObject {
         print("NotiViewModel - getNotiInfoFromDB() called")
         if let data = realm.objects(PetInfo.self).first?.notiDatas {
             print("getNotiInfoFromDB() - 로컬디비에 정보가 있다.")
-            print(data)
             
             notiDatas = filteredDatas(notiDatas: Array(data)).sorted{$0.notiDate < $1.notiDate}
         }
     }
     
+    // 날짜 업데이트
     func filteredDatas(notiDatas: [NotiData]) -> [NotiData] {
         print("NotiViewModel - filteredDatas() called")
         var filterDatas: [NotiData] = []
@@ -46,8 +46,9 @@ class NotiViewModel: ObservableObject {
             switch item.repeatTypeDisplayName {
             case RepeatType.everyday.displayName:
                 print("everyday")
-                if item.notiDate < currentDate { // 알림 날짜가 지났으면
-                    let day = (Calendar.current.dateComponents([.day], from: item.notiDate, to: currentDate).day ?? 0)
+                if item.notiDate.onlyDate < currentDate.onlyDate { // 알림 날짜가 지났으면
+                    let day = Calendar.current.dateComponents([.day], from: item.notiDate.onlyDate, to: currentDate.onlyDate.onlyDate).day ?? 0
+                    
                     let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -59,7 +60,6 @@ class NotiViewModel: ObservableObject {
                         notiUIImageData: item.notiUIImageData
                     )
                     
-                    
                     filterDatas.append(addData)
                     
                 } else {
@@ -67,11 +67,11 @@ class NotiViewModel: ObservableObject {
                 }
             case RepeatType.everyweak.displayName:
                 print("everyweek")
-                print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
+                print("item.notiDate.onlyDate: \(item.notiDate.onlyDate) currentDate.onlyDate: \(currentDate.onlyDate)")
                 print("item.weekDays: \(item.weekDays)")
-                let currentWeekday = Calendar.current.dateComponents([.weekday], from: currentDate).weekday ?? 0
+                let currentWeekday = Calendar.current.dateComponents([.weekday], from: currentDate.onlyDate).weekday ?? 0
                 
-                if item.notiDate < currentDate {
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     var addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -167,13 +167,13 @@ class NotiViewModel: ObservableObject {
                 
             case RepeatType.everymonth.displayName:
                 print("everymonth")
-                if item.notiDate < currentDate {
-                    let itemDay = Calendar.current.dateComponents([.day], from: item.notiDate).day ?? 0
-                    let currentDay = Calendar.current.dateComponents([.day], from: currentDate).day ?? 0
-                    let itemComponent = Calendar.current.dateComponents([.year, .month, .day], from: item.notiDate)
-                    let currentComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate)
-                    let differMonth = Calendar.current.dateComponents([.month], from: item.notiDate, to: currentDate).month ?? 0
-                    print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
+                if item.notiDate.onlyDate < currentDate.onlyDate {
+                    let itemDay = Calendar.current.dateComponents([.day], from: item.notiDate.onlyDate).day ?? 0
+                    let currentDay = Calendar.current.dateComponents([.day], from: currentDate.onlyDate).day ?? 0
+                    let itemComponent = Calendar.current.dateComponents([.year, .month, .day], from: item.notiDate.onlyDate)
+                    let currentComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate.onlyDate)
+                    let differMonth = Calendar.current.dateComponents([.month], from: item.notiDate.onlyDate, to: currentDate.onlyDate.onlyDate).month ?? 0
+                    print("item.notiDate.onlyDate: \(item.notiDate.onlyDate) currentDate.onlyDate: \(currentDate.onlyDate)")
                     print("itemDay: \(itemDay) currentDay: \(currentDay)")
                     
                     if differMonth >= 12 {   // 1년 이상이면
@@ -184,7 +184,7 @@ class NotiViewModel: ObservableObject {
                     } else { // 오늘 이후면 다음달로
                         addDate = Calendar.current.date(byAdding: .month, value: differMonth+1, to: item.notiDate) ?? Date()
                     }
-                    print(addDate)
+                    
                     let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -202,7 +202,7 @@ class NotiViewModel: ObservableObject {
             case RepeatType.everythreemonths.displayName:
                 print("everythreemonths")
                 print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
-                var month: [Int] = [Calendar.current.component(.month, from: item.notiDate)]
+                var month: [Int] = [Calendar.current.component(.month, from: item.notiDate.onlyDate)]
                 for _ in 0..<3 {
                     if ((month.last ?? 1) + 3) > 12 {
                         month.append(((month.last ?? 1) + 3) % 12)
@@ -211,10 +211,10 @@ class NotiViewModel: ObservableObject {
                     }
                 }
                 
-                if item.notiDate < currentDate {
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     let calendar = Calendar.current
-                    let itemComponent = calendar.dateComponents([.year, .month, .day], from: item.notiDate)
-                    let currentComponent = calendar.dateComponents([.year, .month, .day], from: currentDate)
+                    let itemComponent = calendar.dateComponents([.year, .month, .day], from: item.notiDate.onlyDate)
+                    let currentComponent = calendar.dateComponents([.year, .month, .day], from: currentDate.onlyDate)
                     
                     let addData = NotiData(
                         identifier: item.identifier,
@@ -239,7 +239,7 @@ class NotiViewModel: ObservableObject {
                             addDate = calendar.date(byAdding: .year, value: (currentComponent.year ?? 0)-(itemComponent.year ?? 0), to: item.notiDate) ?? Date()
                             addDate = calendar.date(byAdding: .month, value: nextMonth-(itemComponent.month ?? 0), to: addDate) ?? Date()
                         }
-                        print(addDate)
+                        
                         addData.notiDate = addDate
                         
                     } else {                                                    // 현재 해(current)에 남은 달이 없어서 다음 해로 가는 경우
@@ -256,7 +256,6 @@ class NotiViewModel: ObservableObject {
                             addDate = calendar.date(from: components) ?? Date()
                             
                         }
-                        print(addDate)
                         
                         addData.notiDate = addDate
                     }
@@ -269,17 +268,17 @@ class NotiViewModel: ObservableObject {
             case RepeatType.everysixmonths.displayName:
                 print("everysixmonths")
                 print("item.notiDate: \(item.notiDate) currentDate: \(currentDate)")
-                var month: [Int] = [Calendar.current.component(.month, from: item.notiDate)]
+                var month: [Int] = [Calendar.current.component(.month, from: item.notiDate.onlyDate)]
                 if ((month.last ?? 1) + 6) > 12 {
                     month.append(((month.last ?? 1) + 6) % 12)
                 } else {
                     month.append(((month.last ?? 1) + 6))
                 }
-                print("month: \(month)")
-                if item.notiDate < currentDate {
+                
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     let calendar = Calendar.current
-                    let itemComponent = calendar.dateComponents([.year, .month, .day], from: item.notiDate)
-                    let currentComponent = calendar.dateComponents([.year, .month, .day], from: currentDate)
+                    let itemComponent = calendar.dateComponents([.year, .month, .day], from: item.notiDate.onlyDate)
+                    let currentComponent = calendar.dateComponents([.year, .month, .day], from: currentDate.onlyDate)
                     
                     let addData = NotiData(
                         identifier: item.identifier,
@@ -303,7 +302,7 @@ class NotiViewModel: ObservableObject {
                             addDate = calendar.date(byAdding: .year, value: (currentComponent.year ?? 0)-(itemComponent.year ?? 0), to: item.notiDate) ?? Date()
                             addDate = calendar.date(byAdding: .month, value: nextMonth-(itemComponent.month ?? 0), to: addDate) ?? Date()
                         }
-                        print(addDate)
+                        
                         addData.notiDate = addDate
                         
                     } else {                                                    // 현재 해(current)에 남은 달이 없어서 다음 해로 가는 경우
@@ -320,7 +319,6 @@ class NotiViewModel: ObservableObject {
                             addDate = calendar.date(from: components) ?? Date()
                             
                         }
-                        print(addDate)
                         
                         addData.notiDate = addDate
                     }
@@ -334,14 +332,14 @@ class NotiViewModel: ObservableObject {
                 print("everyYear")
                 if item.notiDate < currentDate {
                     let calendar = Calendar.current
-                    let itemYear = calendar.dateComponents([.year], from: item.notiDate).year ?? 0
-                    let currentYear = calendar.dateComponents([.year], from: currentDate).year ?? 0
-                    let itemComponent = calendar.dateComponents([.month, .day], from: item.notiDate)
-                    let currentComponent = calendar.dateComponents([.month, .day], from: currentDate)
-                    let differ = calendar.dateComponents([.year], from: item.notiDate, to: currentDate)
-                    print("item.notiDate: \(item.notiDate), currentDate: \(currentDate)")
+                    let itemYear = calendar.dateComponents([.year], from: item.notiDate.onlyDate).year ?? 0
+                    let currentYear = calendar.dateComponents([.year], from: currentDate.onlyDate).year ?? 0
+                    let itemComponent = calendar.dateComponents([.month, .day], from: item.notiDate.onlyDate)
+                    let currentComponent = calendar.dateComponents([.month, .day], from: currentDate.onlyDate)
+                    let differ = calendar.dateComponents([.year], from: item.notiDate.onlyDate, to: currentDate.onlyDate)
+                    print("item.notiDate.onlyDate: \(item.notiDate.onlyDate), currentDate.onlyDate: \(currentDate.onlyDate)")
                     if itemYear < currentYear {
-                        print(differ)
+                        
                         if differ.year ?? 0 > 0 {           // 1년 이상 차이 날 때
                             if itemComponent == currentComponent { // 같은 달, 일 일때
                                 addDate = calendar.date(byAdding: .year, value: differ.year ?? 0, to: item.notiDate) ?? Date()
@@ -378,20 +376,13 @@ class NotiViewModel: ObservableObject {
                 }
             default:
                 print("default")
-                if item.notiDate.onlyDate >= currentDate.onlyDate {
+                if item.notiDate.onlyDate.onlyDate >= currentDate.onlyDate.onlyDate {
                     filterDatas.append(item)
                 }
             }
         }
         print("filterDatas: \(filterDatas)")
         
-        // 로컬 디비에 notiDatas를 필터 데이터로 갱신
-        if let data = realm.objects(PetInfo.self).first {
-            try! realm.write {
-                data.notiDatas.removeAll()
-                data.notiDatas.append(objectsIn: filterDatas)
-            }
-        }
         return filterDatas
     }
     
@@ -427,13 +418,17 @@ class NotiViewModel: ObservableObject {
        
         if let deleteIndex = notiDatas.firstIndex(of: notiData),
            let data = realm.objects(PetInfo.self).first {
+            let deleteNotiData = notiDatas[deleteIndex]
+            
+            notiDatas.remove(at: deleteIndex)
+            
             try! realm.write {
                 data.notiDatas.remove(at: deleteIndex)
             }
                 
             NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(notiData.identifier))
             
-            notiDatas.remove(at: deleteIndex)
+            NotificationCenter.default.post(name: NSNotification.Name("DeleteNotiData"), object: nil, userInfo: ["deleteNotiData": deleteNotiData])
         }
     }
     

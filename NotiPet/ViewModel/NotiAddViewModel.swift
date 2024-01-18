@@ -93,13 +93,10 @@ class NotiAddViewModel: ObservableObject {
                 }
                 
                 self.repeatDays = sortedDays.map{$0.displayNum}
-                
-                print(self.daysString)
             }
             .store(in: &subscriptions)
         
         $notiRepeatType
-            .print("$notiRepeatType:")
             .sink { type in
                 switch type {
                 case .everyweak:
@@ -120,7 +117,7 @@ class NotiAddViewModel: ObservableObject {
         if let allData = realm.objects(PetInfo.self).first {
             
             print("로컬 DB에 알림 데이터 추가")
-            var addData = NotiData()
+            let addData = NotiData()
             
             switch notiRepeatType {
             case .everyweak:    // 매주
@@ -235,7 +232,7 @@ class NotiAddViewModel: ObservableObject {
             // 기존에 등록된 알림 삭제
             NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(allData.notiDatas[modifyIndex].identifier))
             
-            var addData = NotiData()
+            let addData = NotiData()
             
             // 반복 타입에 따라 데이터 넣기
             switch notiRepeatType {
@@ -341,9 +338,7 @@ class NotiAddViewModel: ObservableObject {
             
             // 로컬 DB 알림 데이터 수정
             try! realm.write {
-                print("allData.notiDatas before: \(allData.notiDatas)")
                 allData.notiDatas[modifyIndex] = addData
-                print("allData.notiDatas after: \(allData.notiDatas)")
             }
         }
     }
@@ -399,6 +394,5 @@ class NotiAddViewModel: ObservableObject {
             fatalError("Unhandled case")
         }
     }
-    
     
 }

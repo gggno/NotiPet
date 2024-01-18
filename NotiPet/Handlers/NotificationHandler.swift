@@ -167,8 +167,6 @@ class NotificationHandler {
                 }
             }
         }
-        
-        checkRegisteredNotification()
     }
     
     // 등록된 로컬 푸시 삭제
