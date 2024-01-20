@@ -7,7 +7,7 @@ struct NotiPetApp: App {
         WindowGroup {
             MainView()
                 .onAppear {
-                    NotificationHandler.shered.askPermisson()
+                    NotificationHandler.shared.askPermisson()
                 }
         }
     }

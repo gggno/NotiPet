@@ -2,7 +2,7 @@ import Foundation
 import UserNotifications
 
 class NotificationHandler {
-    static let shered = NotificationHandler() // 싱글톤으로 설정
+    static let shared = NotificationHandler() // 싱글톤으로 설정
     
     // 알림 허용 요청 보내기
     func askPermisson() {

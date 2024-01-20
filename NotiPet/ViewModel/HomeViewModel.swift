@@ -1,4 +1,3 @@
-import Foundation
 import Combine
 import SwiftUI
 import RealmSwift
@@ -216,10 +215,11 @@ class HomeViewModel: ObservableObject {
         var addDate = Date()
         
         for item in notiDatas {
+            
             switch item.repeatTypeDisplayName {
             case RepeatType.everyday.displayName:
                 print("everyday")
-                if item.notiDate < currentDate { // 알림 날짜가 지났으면
+                if item.notiDate.onlyDate < currentDate.onlyDate { // 알림 날짜가 지났으면
                     let day = (Calendar.current.dateComponents([.day], from: item.notiDate.onlyDate, to: currentDate.onlyDate).day ?? 0)
                     let addData = NotiData(
                         identifier: item.identifier,
@@ -242,7 +242,7 @@ class HomeViewModel: ObservableObject {
                 print("everyweek")
                 let currentWeekday = Calendar.current.dateComponents([.weekday], from: currentDate).weekday ?? 0
                 
-                if item.notiDate < currentDate {
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -328,7 +328,7 @@ class HomeViewModel: ObservableObject {
                 
             case RepeatType.everymonth.displayName:
                 print("everymonth")
-                if item.notiDate < currentDate {
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     let itemComponent = Calendar.current.dateComponents([.year, .month, .day], from: item.notiDate.onlyDate)
                     let currentComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate.onlyDate)
                     let differMonth = Calendar.current.dateComponents([.month], from: item.notiDate.onlyDate, to: currentDate.onlyDate).month ?? 0
@@ -479,7 +479,7 @@ class HomeViewModel: ObservableObject {
                 
             case RepeatType.everyYear.displayName:
                 print("everyYear")
-                if item.notiDate < currentDate {
+                if item.notiDate.onlyDate < currentDate.onlyDate {
                     let calendar = Calendar.current
                     let itemYear = calendar.dateComponents([.year], from: item.notiDate.onlyDate).year ?? 0
                     let currentYear = calendar.dateComponents([.year], from: currentDate.onlyDate).year ?? 0
@@ -530,6 +530,7 @@ class HomeViewModel: ObservableObject {
                 }
             }
         }
+
         
         return filterDatas
     }

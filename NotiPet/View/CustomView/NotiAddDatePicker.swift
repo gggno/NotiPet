@@ -4,8 +4,6 @@ struct NotiAddDatePicker: View {
     @State var selectedDate: Date = Date()
     @Binding var notiDate: Date
     
-    var currentDate = Date()
-    
     var body: some View {
         DatePicker("",
                    selection: $selectedDate,

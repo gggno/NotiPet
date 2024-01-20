@@ -133,7 +133,7 @@ class NotiAddViewModel: ObservableObject {
                     addData.identifier.append(id)
                     addData.weekDays.append(day)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -162,7 +162,7 @@ class NotiAddViewModel: ObservableObject {
                     let id = UUID().uuidString
                     addData.identifier.append(id)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -189,7 +189,7 @@ class NotiAddViewModel: ObservableObject {
                     let id = UUID().uuidString
                     addData.identifier.append(id)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -206,7 +206,7 @@ class NotiAddViewModel: ObservableObject {
                 addData.daysString = daysString
                 addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
-                NotificationHandler.shered.notiNotification(
+                NotificationHandler.shared.notiNotification(
                     identifier: addData.identifier.first ?? "",
                     notiContent: addData.content,
                     notiDate: addData.notiDate,
@@ -219,6 +219,8 @@ class NotiAddViewModel: ObservableObject {
             
             // 추가된 알림 정보를 알림 리스트로 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object: nil, userInfo: ["notiDatas":addData])
+            
+            
         }
     }
     
@@ -230,7 +232,7 @@ class NotiAddViewModel: ObservableObject {
            let modifyIndex = allData.notiDatas.firstIndex(where: {$0.identifier.first == modifyIdentifer.first}) {
             
             // 기존에 등록된 알림 삭제
-            NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(allData.notiDatas[modifyIndex].identifier))
+            NotificationHandler.shared.removeRegisteredNotification(identifiers: Array(allData.notiDatas[modifyIndex].identifier))
             
             let addData = NotiData()
             
@@ -249,7 +251,7 @@ class NotiAddViewModel: ObservableObject {
                     addData.identifier.append(id)
                     addData.weekDays.append(day)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -278,7 +280,7 @@ class NotiAddViewModel: ObservableObject {
                     let id = UUID().uuidString
                     addData.identifier.append(id)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -305,7 +307,7 @@ class NotiAddViewModel: ObservableObject {
                     let id = UUID().uuidString
                     addData.identifier.append(id)
                     
-                    NotificationHandler.shered.notiNotification(
+                    NotificationHandler.shared.notiNotification(
                         identifier: id,
                         notiContent: addData.content,
                         notiDate: addData.notiDate,
@@ -322,24 +324,24 @@ class NotiAddViewModel: ObservableObject {
                 addData.daysString = daysString
                 addData.notiUIImageData = notiUIImage?.jpegData(compressionQuality: 1)
                 
-                NotificationHandler.shered.notiNotification(
+                NotificationHandler.shared.notiNotification(
                     identifier: addData.identifier.first ?? "",
                     notiContent: addData.content,
                     notiDate: addData.notiDate,
                     repeatType: notiRepeatType)
             }
             
-            // 수정된 알림 데이터 전달
-            NotificationCenter.default.post(name: NSNotification.Name("modifyDataIdentifer"),
-                                            object: nil,
-                                            userInfo: [
-                                                "identiferFirst": allData.notiDatas[modifyIndex].identifier.first,
-                                                "modifyData": addData])
-            
             // 로컬 DB 알림 데이터 수정
             try! realm.write {
                 allData.notiDatas[modifyIndex] = addData
             }
+            
+            // 수정된 알림 데이터 전달
+            NotificationCenter.default.post(name: NSNotification.Name("modifyDataIdentifer"),
+                                            object: nil,
+                                            userInfo: [
+                                                "identiferFirst": modifyIdentifer.first,
+                                                "modifyData": addData])
         }
     }
     

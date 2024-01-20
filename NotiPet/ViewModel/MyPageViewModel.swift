@@ -136,7 +136,7 @@ class MyPageViewModel: ObservableObject {
                     realm.delete(anniversaryDatas[index])
                     anniversaryDatas.remove(atOffsets: indexSet)
                     // 로컬 푸시 알림 해제
-                    NotificationHandler.shered.removeRegisteredNotification(identifiers: [deletedIdentifier])
+                    NotificationHandler.shared.removeRegisteredNotification(identifiers: [deletedIdentifier])
                 } else {
                     showBirthdayAlert = true
                 }
@@ -176,7 +176,7 @@ class MyPageViewModel: ObservableObject {
                         dueDate: item.dueDate
                     )
                     // 로컬 푸시 알림 등록
-                    NotificationHandler.shered.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
+                    NotificationHandler.shared.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
                     
                     filterDatas.append(copiedItem)
                     
@@ -198,7 +198,7 @@ class MyPageViewModel: ObservableObject {
                             dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate)
                         )
                         // 로컬 푸시 알림 재등록
-                        NotificationHandler.shered.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
+                        NotificationHandler.shared.anniversaryNotification(identifier: copiedItem.identifier, dateString: copiedItem.dueDate, title: "기념일 알림", body: copiedItem.content)
                         
                         filterDatas.append(copiedItem)
                         

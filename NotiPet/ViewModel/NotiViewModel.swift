@@ -47,8 +47,9 @@ class NotiViewModel: ObservableObject {
             case RepeatType.everyday.displayName:
                 print("everyday")
                 if item.notiDate.onlyDate < currentDate.onlyDate { // 알림 날짜가 지났으면
+                    print("item.notiDate.onlyDate < currentDate.onlyDate")
                     let day = Calendar.current.dateComponents([.day], from: item.notiDate.onlyDate, to: currentDate.onlyDate.onlyDate).day ?? 0
-                    
+                    print("day: \(day)")
                     let addData = NotiData(
                         identifier: item.identifier,
                         content: item.content,
@@ -63,6 +64,7 @@ class NotiViewModel: ObservableObject {
                     filterDatas.append(addData)
                     
                 } else {
+                    print("item.notiDate.onlyDate >= currentDate.onlyDate")
                     filterDatas.append(item)
                 }
             case RepeatType.everyweak.displayName:
@@ -110,7 +112,6 @@ class NotiViewModel: ObservableObject {
                         newDateComponents.year = components.year
                         newDateComponents.month = components.month
                         newDateComponents.day = components.day
-                        print(calendar.date(from: newDateComponents))
                         
                         addData.notiDate = calendar.date(from: newDateComponents) ?? Date()
                     }
@@ -381,7 +382,14 @@ class NotiViewModel: ObservableObject {
                 }
             }
         }
-        print("filterDatas: \(filterDatas)")
+        
+        // 로컬 디비에 notiDatas를 필터 데이터로 갱신
+        if let data = realm.objects(PetInfo.self).first {
+            try! realm.write {
+                data.notiDatas.removeAll()
+                data.notiDatas.append(objectsIn: filterDatas)
+            }
+        }
         
         return filterDatas
     }
@@ -392,6 +400,7 @@ class NotiViewModel: ObservableObject {
         
         if let userInfo = notification.userInfo,
            let notiData = userInfo["notiDatas"] as? NotiData {
+            
             notiDatas.append(notiData)
             notiDatas = filteredDatas(notiDatas: notiDatas).sorted { $0.notiDate < $1.notiDate }
         }
@@ -426,7 +435,7 @@ class NotiViewModel: ObservableObject {
                 data.notiDatas.remove(at: deleteIndex)
             }
                 
-            NotificationHandler.shered.removeRegisteredNotification(identifiers: Array(notiData.identifier))
+            NotificationHandler.shared.removeRegisteredNotification(identifiers: Array(notiData.identifier))
             
             NotificationCenter.default.post(name: NSNotification.Name("DeleteNotiData"), object: nil, userInfo: ["deleteNotiData": deleteNotiData])
         }

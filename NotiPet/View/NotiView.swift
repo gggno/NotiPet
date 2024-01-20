@@ -1,6 +1,5 @@
 import SwiftUI
 import Combine
-import RealmSwift
 
 struct NotiView: View {
     @StateObject var notiVM = NotiViewModel()

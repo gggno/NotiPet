@@ -67,7 +67,7 @@ class AnniversaryAddViewModel: ObservableObject {
                     )
                     allData.anniversaryDatas.append(addData)
                     // 로컬 푸시 알림 등록
-                    NotificationHandler.shered.anniversaryNotification(identifier: addData.identifier, dateString: addData.dueDate, title: "기념일 알림", body: addData.content)
+                    NotificationHandler.shared.anniversaryNotification(identifier: addData.identifier, dateString: addData.dueDate, title: "기념일 알림", body: addData.content)
                 }
                 
             }

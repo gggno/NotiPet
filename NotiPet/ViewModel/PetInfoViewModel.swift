@@ -165,7 +165,7 @@ class PetInfoViewModel: ObservableObject {
                     data.anniversaryDatas = filterDatas
                     
                     // 새로 등록된 생일 로컬 푸시 알림 등록
-                    NotificationHandler.shered.anniversaryNotification(
+                    NotificationHandler.shared.anniversaryNotification(
                         identifier: filterDatas[filterIndex].identifier,
                         dateString: filterDatas[filterIndex].dueDate,
                         title: "기념일 알림",
@@ -195,7 +195,7 @@ class PetInfoViewModel: ObservableObject {
                 petInfo.anniversaryDatas.append(birthdayData)
                 
                 // 로컬 푸시 알림 등록
-                NotificationHandler.shered.anniversaryNotification(
+                NotificationHandler.shared.anniversaryNotification(
                     identifier: birthdayData.identifier,
                     dateString: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate),
                     title: "기념일 알림", body: birthdayData.content
