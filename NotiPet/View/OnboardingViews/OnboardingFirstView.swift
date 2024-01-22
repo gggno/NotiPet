@@ -9,13 +9,12 @@ struct OnboardingFirstView: View {
                     .foregroundColor(.gray)
                 
                 Text("알림펫")
-                    .font(.system(size: 50))
+                    .font(.system(size: 50, weight: .bold))
                     .bold()
             }
-            
-            Image(systemName: "pawprint.circle.fill")
+            Image("Icon")
                 .resizable()
-                .frame(width: 180, height: 180)
+                .frame(width: 240, height: 240)
                 .padding(.top, 70)
             Spacer()
                 
