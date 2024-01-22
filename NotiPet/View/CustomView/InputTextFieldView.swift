@@ -10,6 +10,7 @@ struct InputTextFieldView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(theme)
+                    .font(.body)
                 Text(message)
                     .font(.footnote)
                     .foregroundStyle(.red)

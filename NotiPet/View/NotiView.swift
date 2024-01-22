@@ -41,19 +41,19 @@ struct NotiView: View {
                 .listRowBackground(
                     RoundedRectangle(cornerRadius: 8)
                         .background(.clear)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("CreamColor"))
                         .padding(
                             EdgeInsets(
-                                top: 2,
+                                top: 4,
                                 leading: 10,
-                                bottom: 2,
+                                bottom: 4,
                                 trailing: 10
                             )
                         )
                 )
             }
             .listStyle(.plain)
-            .alert("삭제 알림", isPresented: $showDeleteAlert) {
+            .alert("삭제하시겠습니까?", isPresented: $showDeleteAlert) {
                 Button("삭제", role: .destructive) {
                     withAnimation {
                         if let deleteData = deleteData {

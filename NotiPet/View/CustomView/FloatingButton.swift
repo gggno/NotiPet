@@ -14,7 +14,7 @@ struct FloatingButton: View {
                 .frame(width: 28, height: 28)
                 .padding()
         })
-        .background(Color(.systemBlue))
+        .background(Color("PeachColor"))
         .foregroundColor(.white)
         .clipShape(Circle())
         .padding()

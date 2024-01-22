@@ -7,12 +7,13 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             List {
-                Group {
+                VStack(alignment: .leading, spacing: 25) {
                     PetProfileView(petProfileUIImage: $homeVM.petProfileUIImage, petName: $homeVM.petName, birthDate: $homeVM.birthDate, sex: $homeVM.sex)
                     HomeDatePicker(selectedDate: $homeVM.selectedDate)
                     SelectedNotiView(selectedDate: $homeVM.selectedDate, selectedNotiDatas: $homeVM.selectedNotiDatas)
                 }
                 .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
             

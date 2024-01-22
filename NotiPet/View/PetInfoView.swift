@@ -18,12 +18,12 @@ struct PetInfoView: View {
                 HStack {
                     Spacer()
                     ZStack {
-                        Circle()
-                            .fill()
-                            .overlay(
-                                Text("이미지 추가")
-                                    .foregroundColor(.blue)
-                            )
+                        Image("PetBasicProfile")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                            .frame(width: 100, height: 100)
                             .zIndex(0)
                         
                         if let image = petInfoVM.petProfileUIImage {
@@ -53,7 +53,7 @@ struct PetInfoView: View {
                                 petInfoVM.petProfileUIImage = nil
                             }, label: {
                                 Text("기본 이미지로 설정")
-                            })
+                            })  
                         })
                     .sheet(isPresented: $petInfoVM.isImagePickerPresented) {
                         ImagePicker(selectedUIImage: $petInfoVM.petProfileUIImage)
@@ -61,9 +61,11 @@ struct PetInfoView: View {
                     Spacer()
                 }
             }
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
             
             Spacer()
+                .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             
             Section {
@@ -72,6 +74,7 @@ struct PetInfoView: View {
                 InputTextFieldView(theme: "몸무게(kg)", content: $petInfoVM.weight, message: $petInfoVM.weightMessage, lineLimit: 1)
                 VStack(alignment: .center, spacing: 10) {
                     Text("생년월일")
+                        .font(.body)
                     HStack(alignment: .center) {
                         Button(action: {
                             isDatePickerPresented.toggle()
@@ -89,7 +92,7 @@ struct PetInfoView: View {
                     HStack {
                         Text("성별")
                         Text(petInfoVM.sexMessage)
-                            .font(.footnote)
+                            .font(.body)
                             .foregroundStyle(.red)
                     }
                     HStack {
@@ -99,7 +102,7 @@ struct PetInfoView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color.gray, lineWidth: 1)
                             )
-                            .background(petInfoVM.sex == "남아" ? Color.yellow : Color.white)
+                            .background(petInfoVM.sex == "남아" ? Color("CreamColor") : Color.white)
                             .cornerRadius(10)
                             .onTapGesture {
                                 petInfoVM.sex = "남아"
@@ -113,7 +116,7 @@ struct PetInfoView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color.gray, lineWidth: 1)
                             )
-                            .background(petInfoVM.sex == "여아" ? Color.yellow : Color.white)
+                            .background(petInfoVM.sex == "여아" ? Color("CreamColor") : Color.white)
                             .cornerRadius(10)
                             .onTapGesture {
                                 petInfoVM.sex = "여아"
@@ -121,7 +124,6 @@ struct PetInfoView: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-                .background(Color.green)
                 .frame(minWidth: 0, maxWidth: .infinity)
                 Spacer()
                 HStack {
@@ -132,13 +134,16 @@ struct PetInfoView: View {
                         petInfoVM.sendData()
                     }, label: {
                         Text("등록하기")
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(.white)
                     })
                     .padding(.bottom, 70)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                     .disabled(!petInfoVM.isValidation)
                     Spacer()
                 }
             }
+            .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
         }
         .listStyle(.plain)

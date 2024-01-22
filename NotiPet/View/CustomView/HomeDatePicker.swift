@@ -11,11 +11,7 @@ struct HomeDatePicker: View {
         .datePickerStyle(.graphical)
         .labelsHidden()
         .environment(\.locale, Locale(identifier: "ko_KR"))
-        .onChange(of: selectedDate) { oldValue, newValue in
-//            notiDate = selectedDate
-        }
-        .onAppear {
-//            selectedDate = notiDate
-        }
+        .tint(Color("PeachColor"))
+        .background(Color.white.opacity(0.8), in: RoundedRectangle(cornerRadius: 20))
     }
 }

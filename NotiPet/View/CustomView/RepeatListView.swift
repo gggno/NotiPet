@@ -17,7 +17,7 @@ struct RepeatListView: View {
                         Spacer()
                         if type == repeatType {
                             Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color("PeachColor"))
                         }
                     }
                 })

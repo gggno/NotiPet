@@ -45,7 +45,7 @@ struct NotiAddView: View {
                 Section {
                     ZStack {
                         Text("이미지 추가")
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color("PeachColor"))
                             .zIndex(0)
                         
                         if let image = notiaddVM.notiUIImage {

@@ -21,7 +21,7 @@ struct DatePicker_WheelView: View {
         }, label: {
             Text("선택완료")
         })
-        .border(.blue)
+        .buttonStyle(.bordered)
     }
 }
 

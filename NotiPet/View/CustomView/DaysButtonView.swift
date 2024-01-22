@@ -10,10 +10,10 @@ struct DaysButtonView: View {
                     .frame(width: 35, height: 35)
                     .overlay(
                         RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray, lineWidth: 1)
+                            .stroke(Color.white, lineWidth: 1)
                     )
                     .foregroundColor(selectedDays.contains(day) ? .white : .secondary)
-                    .background(selectedDays.contains(day) ? Color.blue : Color.gray)
+                    .background(selectedDays.contains(day) ? Color("PeachColor") : Color.gray)
                     .cornerRadius(5)
                     .onTapGesture {
                         if selectedDays.contains(day) {
