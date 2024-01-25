@@ -2,13 +2,18 @@ import Foundation
 import RealmSwift
 
 class PetInfo: Object {
+    // 펫정보 데이터
     @Persisted var petProfileImageData: Data?
     @Persisted var petName: String = ""
     @Persisted var species: String = ""
     @Persisted var birthDate: String = ""
     @Persisted var weight: String = ""
     @Persisted var sex: String = ""
+    
+    // 기념일 데이터
     @Persisted var anniversaryDatas = List<AnniversaryData>()
+    
+    // 알림 데이터
     @Persisted var notiDatas = List<NotiData>()
 }
 
@@ -28,7 +33,7 @@ class AnniversaryData: Object {
     }
 }
 
-// 할일 데이터
+// 알림 데이터
 class NotiData: Object {
     @Persisted var identifier: List<String>
     @Persisted var content: String

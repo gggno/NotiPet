@@ -145,7 +145,7 @@ struct PetInfoView: View {
             }
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
-        }
+        } 
         .listStyle(.plain)
         .onAppear(perform : UIApplication.shared.hideKeyboard)
     }

@@ -28,6 +28,7 @@ class NotiAddViewModel: ObservableObject {
     
     var repeatDays: [Int] = []
     
+    // notiContent 한 글자 이상 입력했는지 판단 유무
     var validnotiContentPublisher: AnyPublisher<Bool, Never> {
         $notiContent
             .map{$0.count >= 1}
@@ -47,7 +48,7 @@ class NotiAddViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
     
-    
+    // notiContent, notiRepeatType&&selectedDays 모두 조건을 만족했는지 판단 유무(만족했다면 "완료" 버튼 활성화)
     var validConfirmPublisher: AnyPublisher<Bool, Never> {
         Publishers
             .CombineLatest(validnotiContentPublisher, validEveryweekPublisher)
@@ -219,8 +220,6 @@ class NotiAddViewModel: ObservableObject {
             
             // 추가된 알림 정보를 알림 리스트로 전달
             NotificationCenter.default.post(name: NSNotification.Name("notiData"), object: nil, userInfo: ["notiDatas":addData])
-            
-            
         }
     }
     

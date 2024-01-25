@@ -8,7 +8,6 @@ struct RepeatListView: View {
             ForEach(RepeatType.allCases, id: \.self) { type in
                 Button(action: {
                     repeatType = type
-                    print(repeatType)
                     
                 }, label: {
                     HStack {

@@ -87,7 +87,8 @@ class HomeViewModel: ObservableObject {
             sex = allData.sex
             
             // 알림 정보 받기
-            notiDatas = filteredDatas(notiDatas: Array(allData.notiDatas)).sorted { $0.notiDate < $1.notiDate }
+            notiDatas = filteredDatas(notiDatas: Array(allData.notiDatas)).sorted { $0.notiDate.onlyTime() < $1.notiDate.onlyTime() }
+            print(allData.notiDatas)
         }
     }
     
@@ -232,12 +233,12 @@ class HomeViewModel: ObservableObject {
                         notiUIImageData: item.notiUIImageData
                     )
                     
-                    
                     filterDatas.append(addData)
                     
                 } else {
                     filterDatas.append(item)
                 }
+                
             case RepeatType.everyweak.displayName:
                 print("everyweek")
                 let currentWeekday = Calendar.current.dateComponents([.weekday], from: currentDate).weekday ?? 0
@@ -498,14 +499,13 @@ class HomeViewModel: ObservableObject {
                         } else {
                             addDate = calendar.date(byAdding: .year, value: 1, to: item.notiDate) ?? Date()
                         }
-                        print("itemYear < currentYear addDate: \(addDate)")
+                        
                     } else if itemYear == currentYear {     // 같은 해 일때
                         if itemComponent == currentComponent { // 같은 달, 일 일때
                             addDate = calendar.date(byAdding: .year, value: differ.year ?? 0, to: item.notiDate) ?? Date()
                         } else { // 다른 날 일때
                             addDate = calendar.date(byAdding: .year, value: 1, to: item.notiDate) ?? Date()
                         }
-                        print("itemYear == currentYear addDate: \(addDate)")
                     }
                     
                     let addData = NotiData(
@@ -523,6 +523,7 @@ class HomeViewModel: ObservableObject {
                 } else {
                     filterDatas.append(item)
                 }
+                
             default:
                 print("default")
                 if item.notiDate.onlyDate >= currentDate.onlyDate {
@@ -531,7 +532,6 @@ class HomeViewModel: ObservableObject {
             }
         }
 
-        
         return filterDatas
     }
 }

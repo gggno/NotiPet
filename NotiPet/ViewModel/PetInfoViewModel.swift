@@ -25,30 +25,35 @@ class PetInfoViewModel: ObservableObject {
     @Published var isImagePickerPresented: Bool = false
     @Published var isImageChoicePresented: Bool = false
     
+    // petName 한 글자 이상 입력했는지 판단 유무
     var validPetNamePublisher: AnyPublisher<Bool, Never> {
         $petName
             .map{$0.count >= 1}
             .eraseToAnyPublisher()
     }
     
+    // species 한 글자 이상 입력했는지 판단 유무
     var validSpeciesPublisher: AnyPublisher<Bool, Never> {
         $species
             .map{$0.count >= 1}
             .eraseToAnyPublisher()
     }
     
+    // weight 실수형으로 입력했는지 판단 유무
     var validWeightPublisher: AnyPublisher<Bool, Never> {
         $weight
             .map{(Double($0) != nil) ? true : false}
             .eraseToAnyPublisher()
     }
     
+    // sex 선택했는지 판단 유무
     var validSexPublisher: AnyPublisher<Bool, Never> {
         $sex
             .map{$0 == "" ? false : true}
             .eraseToAnyPublisher()
     }
     
+    // petName, species, weight, sex 모두 조건을 만족했는지 판단 유무(만족했다면 "입력하기" 버튼 활성화)
     var validConfirmPublisher: AnyPublisher<Bool, Never> {
         Publishers
             .CombineLatest4(validPetNamePublisher, validSpeciesPublisher, validWeightPublisher, validSexPublisher)
@@ -94,47 +99,22 @@ class PetInfoViewModel: ObservableObject {
             .assign(to: \.isValidation, on: self)
             .store(in: &subscriptions)
         
-        $petProfileUIImage
-            .print("petProfileUIImage")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
-        
-        $petName
-            .print("petName")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
-        
-        $species
-            .print("species")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
-        
-        $birthDate
-            .print("birthDate")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
-        
         $weight
             .removeDuplicates(by: { old, new in
                 old == new
             })
             .map{$0.prefix(1) == "." ? "0"+$0 : $0}
             .map{$0.suffix(1) == "." ? $0+"0" : $0}
-            .print("weight")
             .assign(to: \.weight, on: self)
             .store(in: &subscriptions)
-        
-        $sex
-            .print("sex")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
     }
     
     // 정보가 있는지 확인. 있으면 화면에 출력하기 위한 용도
     func dataConfirm() {
         print("PetInfoViewModel - dataConfirm() called")
+        
         if let data = realm.objects(PetInfo.self).first {
-            print("dataConfirm() - 로컬디비에 정보가 있다.")
+            print("펫정보가 로컬디비에 정보가 있다.")
             if let imageData = data.petProfileImageData {
                 petProfileUIImage = UIImage(data: imageData)!
             }
@@ -153,7 +133,7 @@ class PetInfoViewModel: ObservableObject {
         print("PetInfoViewModel - infoSave() called")
         
         if let data = realm.objects(PetInfo.self).first {   // 갱신
-            print("기념일 데이터 로컬 DB 갱신")
+            print("펫정보 데이터 로컬 DB 갱신")
             try! realm.write {
                 if data.birthDate != birthDate {    // 생일이 변경되었으면
                     let filterDatas = data.anniversaryDatas
@@ -181,7 +161,7 @@ class PetInfoViewModel: ObservableObject {
                 data.sex = sex
             }
         } else {                                            // 저장
-            print("기념일 데이터 로컬 DB 최초 저장")
+            print("펫정보 로컬 DB 최초 저장")
             try! realm.write {
                 petInfo.petProfileImageData = petProfileUIImage?.jpegData(compressionQuality: 1)
                 petInfo.petName = petName
@@ -193,7 +173,7 @@ class PetInfoViewModel: ObservableObject {
                 let birthdayData = AnniversaryData(identifier: UUID().uuidString, dDay: PetInfoViewModel.calculateBirthdayDday(birthdate: birthDate), content: "생일", dueDate: PetInfoViewModel.calculateBirthdayYear(birthdate: birthDate))
                 
                 petInfo.anniversaryDatas.append(birthdayData)
-                
+                anniversaryDatas.append(birthdayData)
                 // 로컬 푸시 알림 등록
                 NotificationHandler.shared.anniversaryNotification(
                     identifier: birthdayData.identifier,
@@ -214,7 +194,6 @@ class PetInfoViewModel: ObservableObject {
                     
                     return $0.content < $1.content
                 }
-                print(sortedArray)
                 
                 // 정렬된 배열을 다시 List로 변환
                 petInfo.anniversaryDatas.removeAll()
@@ -227,6 +206,7 @@ class PetInfoViewModel: ObservableObject {
     
     // MyPageViewModel - recievedDatas()로 데이터 전달
     func sendData() {
+        print("PetInfoViewModel - sendData() called")
         let infoDatas: [String: Any] = [
             "petProfileUIImage": petProfileUIImage,
             "petName": petName,

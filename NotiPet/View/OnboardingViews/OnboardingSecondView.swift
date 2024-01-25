@@ -18,7 +18,3 @@ struct OnboardingSecondView: View {
         .padding(EdgeInsets(top: 70, leading: 6, bottom: 6, trailing: 6))
     }
 }
-
-#Preview {
-    OnboardingSecondView()
-}

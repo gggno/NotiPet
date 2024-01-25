@@ -24,7 +24,3 @@ struct DatePicker_WheelView: View {
         .buttonStyle(.bordered)
     }
 }
-
-//#Preview {
-//    DatePicker_WheelView()
-//}

@@ -12,7 +12,7 @@ struct DaysButtonView: View {
                         RoundedRectangle(cornerRadius: 5)
                             .stroke(Color.white, lineWidth: 1)
                     )
-                    .foregroundColor(selectedDays.contains(day) ? .white : .secondary)
+                    .foregroundColor(selectedDays.contains(day) ? .white : .black)
                     .background(selectedDays.contains(day) ? Color("PeachColor") : Color.gray)
                     .cornerRadius(5)
                     .onTapGesture {
@@ -27,7 +27,3 @@ struct DaysButtonView: View {
         }
     }
 }
-
-//#Preview {
-//    DaysButtonView(repeatType: <#Binding<String>#>)
-//}

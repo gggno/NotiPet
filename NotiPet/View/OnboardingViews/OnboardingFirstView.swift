@@ -4,7 +4,7 @@ struct OnboardingFirstView: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 20) {
-                Text("우리의 반려동물을 체계적으로 관리하며, 그들의 건강과 행복을 책임지는 편리한 서비스")
+                Text("우리의 반려동물을 체계적으로 관리하며, 그들의 건강과 행복을 책임지는 편리한 알림 서비스")
                     .lineLimit(nil)
                     .foregroundColor(.gray)
                 
@@ -22,8 +22,4 @@ struct OnboardingFirstView: View {
         .padding(EdgeInsets(top: 70, leading: 6, bottom: 6, trailing: 6))
     }
 
-}
-
-#Preview {
-    OnboardingFirstView()
 }

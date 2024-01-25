@@ -9,15 +9,18 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
+    // 년, 월, 일의 Date 타입으로 반환하는 클로저
     var onlyDate: Date {
         let component = Calendar.current.dateComponents([.year, .month, .day], from: self)
         return Calendar.current.date(from: component) ?? Date()
     }
     
+    // 일을 Int 타입으로 반환하는 클로저
     var onlyIntDay: Int {
         return Calendar.current.dateComponents([.weekday], from: self).weekday ?? 0
     }
     
+    // 시간, 분을 String 타입으로 반환하는 함수
     func onlyTime() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "a hh:mm"

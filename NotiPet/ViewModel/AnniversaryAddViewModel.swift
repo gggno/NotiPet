@@ -14,6 +14,7 @@ class AnniversaryAddViewModel: ObservableObject {
     
     @Published var showBirthdayAlert = false
     
+    // anniContent 한 글자 이상 입력했는지 판단 유무
     var validAnniContentPublisher: AnyPublisher<Bool, Never> {
         $anniContent
             .map{$0.count >= 1}
@@ -26,11 +27,6 @@ class AnniversaryAddViewModel: ObservableObject {
     init() {
         print("AnniversaryViewModel - init() called")
         
-        $anniDate
-            .print("anniDate")
-            .sink(receiveValue: { _ in
-            }).store(in: &subscriptions)
-        
         validAnniContentPublisher
             .receive(on: RunLoop.main)
             .map{$0 ? "" : "한 글자 이상 입력해주세요"}
@@ -42,7 +38,6 @@ class AnniversaryAddViewModel: ObservableObject {
             .map{$0 ? true : false}
             .assign(to: \.isValidation, on: self)
             .store(in: &subscriptions)
-        
     }
     
     // 기념일 데이터 추가 후 전달

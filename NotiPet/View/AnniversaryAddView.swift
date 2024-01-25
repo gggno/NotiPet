@@ -50,7 +50,3 @@ struct AnniversaryAddView: View {
         }
     }
 }
-
-//#Preview {
-//    SpecialAnniversaryView(dDay: <#Binding<Int>#>, content: <#Binding<String>#>)
-//}

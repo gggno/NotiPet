@@ -68,6 +68,3 @@ struct NotiView: View {
     }
 }
 
-#Preview {
-    NotiView()
-}

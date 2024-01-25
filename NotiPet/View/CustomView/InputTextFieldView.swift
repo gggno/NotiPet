@@ -26,7 +26,3 @@ struct InputTextFieldView: View {
         }
     }
 }
-
-//#Preview {
-//    InputTextFieldView(theme: <#Binding<String>#>, content: <#Binding<String>#>, message: <#Binding<String>#>, lineLimit: <#Binding<Int>#>)
-//}

@@ -21,12 +21,6 @@ class MyPageViewModel: ObservableObject {
     
     @Published var showBirthdayAlert = false
     
-    var validAnniContentPublisher: AnyPublisher<Bool, Never> {
-        $anniContent
-            .map{$0.count >= 1}
-            .eraseToAnyPublisher()
-    }
-    
     let petInfo = PetInfo()
     let realm = try! Realm()
     
@@ -35,8 +29,9 @@ class MyPageViewModel: ObservableObject {
         
         getInfoFromDB()
         
+        // 펫정보 변경 시 감지 후 업데이트
         NotificationCenter.default.addObserver(self, selector: #selector(recievedDatas(_:)), name: NSNotification.Name("PetInfosData"), object: nil)
-        
+        // 추가된 기념일 데이터 받기
         NotificationCenter.default.addObserver(self, selector: #selector(anniDatasRecieved(_:)), name: NSNotification.Name("anniDatas"), object: nil)
     }
     
@@ -69,7 +64,7 @@ class MyPageViewModel: ObservableObject {
         }
     }
     
-    // 데이터가 변경될 시 감지 후 업데이트
+    // 펫정보 변경 시 감지 후 업데이트
     @objc func recievedDatas(_ notification: NSNotification) {
         print("MyPageViewModel - recievedDatas() called")
         if let userInfo = notification.userInfo,
@@ -79,7 +74,7 @@ class MyPageViewModel: ObservableObject {
            let weight = userInfo["weight"] as? String,
            let sex = userInfo["sex"] as? String,
            let anniversaryDatas = userInfo["anniversaryDatas"] as? [AnniversaryData] {
-
+            
             if let petProfileImage = userInfo["petProfileUIImage"] as? UIImage {
                 self.petProfileUIImage = petProfileImage
             } else {
@@ -135,6 +130,7 @@ class MyPageViewModel: ObservableObject {
                 if anniversaryDatas[index].content != "생일" {
                     realm.delete(anniversaryDatas[index])
                     anniversaryDatas.remove(atOffsets: indexSet)
+                    
                     // 로컬 푸시 알림 해제
                     NotificationHandler.shared.removeRegisteredNotification(identifiers: [deletedIdentifier])
                 } else {

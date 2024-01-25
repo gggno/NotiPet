@@ -78,7 +78,7 @@ struct MyPageView: View {
                 .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                
+                 
                 ForEach(myPageVM.anniversaryDatas, id: \.self) { data in
                     HStack {
                         Text(data.dDay)
@@ -103,8 +103,4 @@ struct MyPageView: View {
             Alert(title: Text("알림"), message: Text("생일은 삭제할 수 없습니다."), dismissButton: .default(Text("확인")))
         }
     }
-}
-
-#Preview {
-    MyPageView()
 }
